@@ -1,10 +1,12 @@
 //jshint esversion: 6
-
+require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
+const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 
 const {getInitial} = require('./api')
 const {getCinemas} = require('./cinema')
@@ -17,6 +19,23 @@ mongoose.connect('mongodb://localhost:27017/screentimeDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
+
+var sess = {
+  secret: process.env.TMB_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 300000
+  },
+  store: new MongoStore({mongooseConnection: mongoose.connection})
+}
+
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1)
+  sess.cookie.secure = true
+}
+
+app.use(session(sess))
 
 const moviesSchema = new mongoose.Schema({
   popularity: Number,
@@ -72,8 +91,8 @@ async function setInitial() {
 
 app.get('/page-numbers', (req, res) => {
 
-  Showing.find({}, (err, results) => {
-    var total = results[0].totalMovies
+  Showing.findOne({}, (err, results) => {
+    var total = results.totalMovies
 
     var nums
     if (!err) {
@@ -91,7 +110,7 @@ app.get('/page-numbers', (req, res) => {
 
 app.post('/search-movie', (req, res) => {
 
-  Movie.find({
+  Movie.findOne({
     title: req.body.movie.toLowerCase()
   }, (err, results) => {
     if (!err) {
@@ -119,38 +138,36 @@ app.get('/movies/:pageId', (req, res) => {
   })
 })
 
-
 app.get('/cinemas', (req, res) => {
   res.send(getCinemas())
 })
 
 
 app.post('/signup', async (req, res) => {
-  let isUsername = true
-  let isEmail = true
-
-  isUsername = await User.find({
+  let name = false
+  let mail = false
+  await User.findOne({
     username: req.body.username
   }, (err, results) => {
-    if (!err && results.length === 0) {
-      return false
+    if (!err && results) {
+      name = true
     }
   })
 
-  isEmail = await User.find({
+  await User.findOne({
     email: req.body.email
   }, (err, results) => {
-    if (!err && results.length === 0) {
-      return false
+    if (!err && results) {
+      mail = true
     }
   })
 
-  if(isEmail && isUsername){
-    res.send('both')
-  }else if (isEmail) {
-    res.send('email')
-  }else if (isUsername) {
-    res.send('username')
+  if (name && mail) {
+    return res.send('both')
+  } else if (name) {
+    return res.send('username')
+  } else if (mail) {
+    return res.send('email')
   }
 
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
@@ -165,37 +182,53 @@ app.post('/signup', async (req, res) => {
       })
       newUser.save((err) => {
         if (!err) {
-          res.send('success')
+          req.session.user = req.body.email
+          return res.send('success')
         } else {
           console.log(err)
-          res.send('failure')
+          return res.send('failure')
         }
       })
     } else {
       console.log(err)
-      res.send('failure')
+      return res.send('failure')
     }
 
   })
 })
 
-app.post('/login', async (req, res) => {
-  let user
+app.post('/login', (req, res) => {
 
-  user = await User.find({email: req.body.email}, (err, results) => results)
+  User.findOne({
+    email: req.body.email
+  }, (err, results) => {
+    if (!err && results) {
+      bcrypt.compare(req.body.password, results.password, (err, comp) => {
+        if (comp) {
+          return res.send({username: results.username, liked: results.liked, history: results.history, subscribed: results.subscribed})
+        } else {
+          return res.send('password')
+        }
+      })
+    } else {
+      return res.send('email')
+    }
+  })
 
-  if(hash.length > 0){
-    bcrypt.compare(req.body.password, user.password, (err, result) => {
-      if(result){
-        res.send({username: user.username, liked: user.liked, history: user.history, subscribed: user.subscribed})
-      }else{
-        res.send('password')
-      }
-    })
-  }else{
-    res.send('email')
+})
+
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.send('user logged out')
+  })
+})
+
+app.get('/checking', (req, res) => {
+  if (req.session.user) {
+    res.send('you are signed in bro')
+  } else {
+    res.send('get the hell outta here')
   }
-
 })
 
 app.listen(5000, () => {
