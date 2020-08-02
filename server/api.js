@@ -33,7 +33,7 @@ async function getInitial() {
       posterPath: item.poster_path,
       id: item.id,
       adult: item.adult,
-      title: item.title,
+      title: item.title.toLowerCase(),
       genreIds: item.genre_ids,
       overview: item.overview
     })

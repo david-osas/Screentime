@@ -4,6 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const {getInitial} = require('./api')
+const {getCinemas} = require('./cinema')
 
 const app = express()
 
@@ -50,20 +51,57 @@ async function setInitial(){
 
 //setInitial()
 
+app.get('/page-numbers', (req,res) => {
+
+  Showing.find({} , (err,results) => {
+    var total = results[0].totalMovies
+
+    var nums
+    if(!err){
+      nums = Math.floor(total/16)
+      if(total%16 > 0){
+        nums++
+      }
+      res.send(nums.toString())
+    }else{
+      console.log(err)
+
+    }
+  })
+})
+
+app.post('/search-movie', (req, res) => {
+
+  Movie.find({title: req.body.movie.toLowerCase()}, (err, results) => {
+    if(!err){
+    res.send(results)
+  }else{
+    console.log(err)
+  }
+  })
+})
 
 
 app.get('/movies/:pageId', (req, res) => {
   var page = req.params.pageId
   var size = (page - 1) * 16
+
   Movie.find({}, null, {skip: size, limit: 16},(err, results) => {
-    if(err){
-      console.log(err)
-    }else{
+    if(!err){
       res.send(results)
+    }else{
+      console.log(err)
+
     }
-
   })
+})
 
-  Showing.find({}, 'totalMovies')
 
+app.get('/cinemas', (req,res) => {
+  res.send(getCinemas())
+})
+
+
+app.listen(5000, () => {
+  console.log('server started on port 5000')
 })
