@@ -8,12 +8,12 @@ const saltRounds = 10
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
-const {getInitial} = require('./api')
+const {getInitial, getPopular} = require('./api')
 const {getCinemas} = require('./cinema')
+const {isAuthenticated} = require('./middleware')
+const {platforms} = require('./streamingPlatforms')
 
 const app = express()
-
-app.use(bodyParser.urlencoded({extended: true}))
 
 mongoose.connect('mongodb://localhost:27017/screentimeDB', {
   useNewUrlParser: true,
@@ -36,7 +36,8 @@ if (app.get('env') === 'production') {
   sess.cookie.secure = true
 }
 
-app.use(session(sess))
+app.use(bodyParser.urlencoded({extended: true}), session(sess), isAuthenticated)
+
 
 const moviesSchema = new mongoose.Schema({
   popularity: Number,
@@ -45,7 +46,8 @@ const moviesSchema = new mongoose.Schema({
   adult: Boolean,
   title: String,
   genreIds: [],
-  overview: String
+  overview: String,
+  releaseDate: String
 })
 
 const showingSchema = new mongoose.Schema({
@@ -66,29 +68,45 @@ const userSchema = mongoose.Schema({
 })
 
 const Movie = mongoose.model('Movie', moviesSchema)
+const Popular = mongoose.model('Popular', moviesSchema)
 const Showing = mongoose.model('Showing', showingSchema)
 const User = mongoose.model('User', userSchema)
 
+
 async function setInitial() {
-  var response = await getInitial()
-  var movieResult = await Movie.insertMany(response.moviesList)
-  var showingResult = await new Showing({
-    totalMovies: response.totalMovies,
+  let resShowing = await getInitial()
+  try{
+    await Movie.insertMany(resShowing.moviesList)
+  }catch(e){
+    console.log(e)
+  }
+  await new Showing({
+    totalMovies: resShowing.totalMovies,
     period: {
-      maximum: response.period.maximum,
-      minimum: response.period.minimum
+      maximum: resShowing.period.maximum,
+      minimum: resShowing.period.minimum
     }
   }).save((err) => {
     if (!err) {
-      console.log('I am done setting things up')
+      console.log('I am done setting now showing movies')
     } else {
       console.log(err)
     }
   })
 
+  let resPopular = await getPopular()
+  try{
+    await Popular.insertMany(resPopular)
+  }catch(e){
+    console.log(e)
+  }
+  console.log('I am done setting popular movies')
+
 }
 
 //setInitial()
+
+
 
 app.get('/page-numbers', (req, res) => {
 
@@ -108,6 +126,12 @@ app.get('/page-numbers', (req, res) => {
     }
   })
 })
+
+app.get('/cinemas', (req, res) => {
+  res.send(getCinemas())
+})
+
+
 
 app.post('/search-movie', (req, res) => {
 
@@ -146,14 +170,22 @@ app.get('/movies/:pageId', (req, res) => {
       res.send(results)
     } else {
       console.log(err)
-
     }
   })
 })
 
-app.get('/cinemas', (req, res) => {
-  res.send(getCinemas())
+app.get('/popular-movies', (req, res) => {
+  Popular.find({}, (err, results) => {
+    if (!err) {
+      res.send({popularMovies: results, platforms})
+    } else {
+      console.log(err)
+    }
+  })
+
 })
+
+
 
 app.post('/signup', async (req, res) => {
   let name = false
@@ -242,6 +274,16 @@ app.get('/checking', (req, res) => {
   } else {
     res.send('get the hell outta here')
   }
+})
+app.get('/register', (req, res) => {
+  console.log('i got here')
+  res.send('login')
+})
+
+
+
+app.get('/*',(req, res) => {
+  res.send('welcome home')
 })
 
 app.listen(5000, () => {
