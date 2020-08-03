@@ -25,6 +25,7 @@ var sess = {
   resave: false,
   saveUninitialized: false,
   cookie: {
+    // 7 * 24 * 60 * 60 * 1000
     maxAge: 300000
   },
   store: new MongoStore({mongooseConnection: mongoose.connection})
@@ -121,6 +122,18 @@ app.post('/search-movie', (req, res) => {
   })
 })
 
+app.post('/liked-movie', (req, res) => {
+  User.findOneAndUpdate({
+    email: req.session.user
+  }, {
+    $push: {
+      liked: req.body.movieId
+    }
+  }, (err, results) => {
+    res.send('success')
+  })
+})
+
 app.get('/movies/:pageId', (req, res) => {
   var page = req.params.pageId
   var size = (page - 1) * 16
@@ -141,7 +154,6 @@ app.get('/movies/:pageId', (req, res) => {
 app.get('/cinemas', (req, res) => {
   res.send(getCinemas())
 })
-
 
 app.post('/signup', async (req, res) => {
   let name = false
@@ -205,6 +217,7 @@ app.post('/login', (req, res) => {
     if (!err && results) {
       bcrypt.compare(req.body.password, results.password, (err, comp) => {
         if (comp) {
+          req.session.user = req.body.email
           return res.send({username: results.username, liked: results.liked, history: results.history, subscribed: results.subscribed})
         } else {
           return res.send('password')
