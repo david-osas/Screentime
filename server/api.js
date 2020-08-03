@@ -68,6 +68,15 @@ exports.getGenreList = async function(){
   let url = "https://api.themoviedb.org/3/genre/movie/list?api_key=" + process.env.TMB_KEY + "&language=en-US"
   let response = await fetch(url)
   let genreIds = await response.json()
-  let genreList = genreIds.genres
-  return genreList
+
+  return genreIds.genres
+}
+
+exports.getNews = async function(){
+  let url = "https://newsapi.org/v2/top-headlines?country=us&category=entertainment&apiKey="+process.env.NEWS_KEY
+  let response = await fetch(url)
+  let news = await response.json()
+
+  return news.articles
+
 }

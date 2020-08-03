@@ -1,6 +1,6 @@
 const cinemasList = ['Exodus','Goldenbird','Light Tower','Sphere','Arena','Imperial', 'Moviehouse','Star','Movie Rocket','Movie Map']
 
-function getCinemas(){
+exports.getCinemas = function (){
   const num = Math.floor(Math.random() * 10) + 1
   var cinemas = new Set()
   var prices = []
@@ -15,5 +15,3 @@ function getCinemas(){
 
   return {cinemas: [...cinemas], prices}
 }
-
-exports.getCinemas = getCinemas
