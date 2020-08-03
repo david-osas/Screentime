@@ -8,9 +8,9 @@ const {session, sess, Movie, Popular, Showing, User, Genre, Article, setData} = 
 const {getCinemas} = require('./cinema')
 const {isAuthenticated} = require('./middleware')
 const {platforms} = require('./streamingPlatforms')
+const {isUpdating, runUpdate} = require('./update')
 
 const app = express()
-
 
 if (app.get('env') === 'production') {
   app.set('trust proxy', 1)
@@ -20,13 +20,13 @@ if (app.get('env') === 'production') {
 //, isAuthenticated
 app.use(bodyParser.urlencoded({extended: true}), session(sess))
 
-//setData()
+
 
 app.get('/top-news', (req, res) => {
   Article.find({}, (err, results) => {
-    if(!err){
-      res.send(results)
-    }else{
+    if (!err) {
+      res.json({results})
+    } else {
       console.log(err)
     }
   })
@@ -42,7 +42,7 @@ app.get('/page-numbers', (req, res) => {
       if (total % 16 > 0) {
         nums++
       }
-      res.send(nums.toString())
+      res.json({num: nums.toString()})
     } else {
       console.log(err)
 
@@ -51,12 +51,12 @@ app.get('/page-numbers', (req, res) => {
 })
 
 app.get('/cinemas', (req, res) => {
-  res.send(getCinemas())
+  res.json({cinemas: getCinemas()})
 })
 
 app.get('/genre-list', (req, res) => {
-  Genre.find({},(err, results) => {
-    res.send(results)
+  Genre.find({}, (err, results) => {
+    res.json({results})
   })
 })
 
@@ -64,16 +64,16 @@ app.patch('/subscribe', (req, res) => {
   User.findOne({
     email: req.session.user
   }, (err, results) => {
-    if(!err){
-      if(results.subscribed.length >= 5){
+    if (!err) {
+      if (results.subscribed.length >= 5) {
         return res.send('failure')
-      }else{
+      } else {
         results.subscribed.push(req.body.genreId)
         results.save()
         return res.send('success')
       }
 
-    }else{
+    } else {
       console.log(err)
     }
   })
@@ -83,16 +83,15 @@ app.patch('/unsubscribe', (req, res) => {
   User.findOne({
     email: req.session.user
   }, (err, results) => {
-    if(!err){
+    if (!err) {
       results.subscribed = results.subscribed.filter(s => s !== req.body.genreId)
       results.save()
       return res.send('success')
-    }else{
+    } else {
       console.log(err)
     }
   })
 })
-
 
 app.get('/search-movie', (req, res) => {
 
@@ -100,7 +99,11 @@ app.get('/search-movie', (req, res) => {
     title: req.body.movie.toLowerCase()
   }, (err, results) => {
     if (!err) {
-      res.send(results)
+      if(results){
+        res.json({results})
+      }else{
+        res.send('failure')
+      }
     } else {
       console.log(err)
     }
@@ -115,9 +118,9 @@ app.patch('/like-movie', (req, res) => {
       liked: req.body.movieId
     }
   }, (err, results) => {
-    if(!err){
+    if (!err) {
       res.send('success')
-    }else{
+    } else {
       console.log(err)
     }
   })
@@ -127,11 +130,11 @@ app.patch('/unlike-movie', (req, res) => {
   User.findOne({
     email: req.session.user
   }, (err, results) => {
-    if(!err){
+    if (!err) {
       results.liked = results.liked.filter(s => s !== req.body.movieId)
       results.save()
       res.send('success')
-    }else{
+    } else {
       console.log(err)
     }
   })
@@ -145,9 +148,9 @@ app.patch('/add-to-watchlist', (req, res) => {
       watchlist: req.body.movieId
     }
   }, (err, results) => {
-    if(!err){
+    if (!err) {
       res.send('success')
-    }else{
+    } else {
       console.log(err)
     }
   })
@@ -157,11 +160,11 @@ app.patch('/remove-from-watchlist', (req, res) => {
   User.findOne({
     email: req.session.user
   }, (err, results) => {
-    if(!err){
+    if (!err) {
       results.watchlist = results.watchlist.filter(s => s !== req.body.movieId)
       results.save()
       res.send('success')
-    }else{
+    } else {
       console.log(err)
     }
   })
@@ -176,7 +179,7 @@ app.get('/movies/:pageId', (req, res) => {
     limit: 16
   }, (err, results) => {
     if (!err) {
-      res.send(results)
+      res.json({results})
     } else {
       console.log(err)
     }
@@ -186,15 +189,13 @@ app.get('/movies/:pageId', (req, res) => {
 app.get('/popular-movies', (req, res) => {
   Popular.find({}, (err, results) => {
     if (!err) {
-      res.send({popularMovies: results, platforms})
+      res.json({popularMovies: results, platforms})
     } else {
       console.log(err)
     }
   })
 
 })
-
-
 
 app.post('/signup', async (req, res) => {
   let name = false
@@ -289,12 +290,16 @@ app.get('/register', (req, res) => {
   res.send('login')
 })
 
-
-
-app.get('/*',(req, res) => {
+app.get('/*', (req, res) => {
   res.send('welcome home')
 })
 
+//setData()
 app.listen(5000, () => {
   console.log('server started on port 5000')
+  let intervaleObj = runUpdate()
+  setTimeout(() => {
+    clearInterval(intervaleObj)
+    console.log('Updating has stopped')
+  }, 10 * 60 * 1000)
 })

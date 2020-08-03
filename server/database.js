@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
-const {getInitial, getPopular, getGenreList, getNews} = require('./api')
+const {getShowing, getPopular, getGenreList, getNews} = require('./api')
+let update = false
 
 mongoose.connect('mongodb://localhost:27017/screentimeDB', {
   useFindAndModify: false,
@@ -74,8 +75,10 @@ const User = mongoose.model('User', userSchema)
 const Genre = mongoose.model('Genre', genreSchema)
 const Article = mongoose.model('Article', articlesSchema)
 
+const modelList = ['movies', 'populars', 'showings', 'genres', 'articles']
+
 exports.setData = async function() {
-  let resShowing = await getInitial()
+  let resShowing = await getShowing()
   try {
     await Movie.insertMany(resShowing.moviesList)
   } catch (e) {
@@ -118,6 +121,18 @@ exports.setData = async function() {
     console.log(e)
   }
   console.log('I am done setting top news')
+  update = false
+  console.log('i am done updating')
+}
+
+exports.dropCollections = function(){
+  for(let i = 0; i < modelList.length; i++){
+    mongoose.connection.db.dropCollection(modelList[i], function(err, result) {
+      console.log('I have dropped '+ modelList[i])
+    })
+  }
+
+
 }
 
 exports.Movie = Movie
@@ -127,3 +142,7 @@ exports.User = User
 exports.Genre = Genre
 exports.Article = Article
 exports.session = session
+exports.setUpdate = () => {
+  update = true
+  console.log(update)
+}
