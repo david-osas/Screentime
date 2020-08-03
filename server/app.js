@@ -8,7 +8,7 @@ const saltRounds = 10
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
-const {getInitial, getPopular} = require('./api')
+const {getInitial, getPopular, getGenreList} = require('./api')
 const {getCinemas} = require('./cinema')
 const {isAuthenticated} = require('./middleware')
 const {platforms} = require('./streamingPlatforms')
@@ -16,6 +16,7 @@ const {platforms} = require('./streamingPlatforms')
 const app = express()
 
 mongoose.connect('mongodb://localhost:27017/screentimeDB', {
+  useFindAndModify: false,
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -36,7 +37,8 @@ if (app.get('env') === 'production') {
   sess.cookie.secure = true
 }
 
-app.use(bodyParser.urlencoded({extended: true}), session(sess), isAuthenticated)
+//, isAuthenticated
+app.use(bodyParser.urlencoded({extended: true}), session(sess))
 
 
 const moviesSchema = new mongoose.Schema({
@@ -67,10 +69,16 @@ const userSchema = mongoose.Schema({
   subscribed: []
 })
 
+const genreSchema = mongoose.Schema({
+  id: Number,
+  name: String
+})
+
 const Movie = mongoose.model('Movie', moviesSchema)
 const Popular = mongoose.model('Popular', moviesSchema)
 const Showing = mongoose.model('Showing', showingSchema)
 const User = mongoose.model('User', userSchema)
+const Genre = mongoose.model('Genre', genreSchema)
 
 
 async function setInitial() {
@@ -102,6 +110,13 @@ async function setInitial() {
   }
   console.log('I am done setting popular movies')
 
+  let resGenreList = await getGenreList()
+  try {
+    await Genre.insertMany(resGenreList)
+  }catch(e){
+    console.log(e)
+  }
+  console.log('I am done setting genre list')
 }
 
 //setInitial()
@@ -131,9 +146,47 @@ app.get('/cinemas', (req, res) => {
   res.send(getCinemas())
 })
 
+app.get('/genre-list', (req, res) => {
+  Genre.find({},(err, results) => {
+    res.send(results)
+  })
+})
+
+app.patch('/subscribe', (req, res) => {
+  User.findOne({
+    email: req.session.user
+  }, (err, results) => {
+    if(!err){
+      if(results.subscribed.length >= 5){
+        return res.send('failure')
+      }else{
+        results.subscribed.push(req.body.genreId)
+        results.save()
+        return res.send('success')
+      }
+
+    }else{
+      console.log(err)
+    }
+  })
+})
+
+app.patch('/unsubcribe', (req, res) => {
+  User.findOne({
+    email: req.session.user
+  }, (err, results) => {
+    if(!err){
+      results.subscribed = results.subscribed.filter(s => s !== req.body.genreId)
+      results.save()
+      return res.send('success')
+    }else{
+      console.log(err)
+    }
+  })
+})
 
 
-app.post('/search-movie', (req, res) => {
+app.get('/search-movie', (req, res) => {
 
   Movie.findOne({
     title: req.body.movie.toLowerCase()
@@ -146,15 +199,33 @@ app.post('/search-movie', (req, res) => {
   })
 })
 
-app.post('/liked-movie', (req, res) => {
+app.patch('/like-movie', (req, res) => {
   User.findOneAndUpdate({
     email: req.session.user
   }, {
-    $push: {
+    $addToSet: {
       liked: req.body.movieId
     }
   }, (err, results) => {
-    res.send('success')
+    if(!err){
+      res.send('success')
+    }else{
+      console.log(err)
+    }
+  })
+})
+
+app.patch('/unlike-movie', (req, res) => {
+  User.findOne({
+    email: req.session.user
+  }, (err, results) => {
+    if(!err){
+      results.liked = results.liked.filter(s => s !== req.body.movieId)
+      results.save()
+      return res.send('success')
+    }else{
+      console.log(err)
+    }
   })
 })
 
@@ -262,7 +333,7 @@ app.post('/login', (req, res) => {
 
 })
 
-app.get('/logout', (req, res) => {
+app.delete('/logout', (req, res) => {
   req.session.destroy(() => {
     res.send('user logged out')
   })

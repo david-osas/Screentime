@@ -63,3 +63,11 @@ exports.getPopular = async function(){
   })
   return (popularList)
 }
+
+exports.getGenreList = async function(){
+  let url = "https://api.themoviedb.org/3/genre/movie/list?api_key=" + process.env.TMB_KEY + "&language=en-US"
+  let response = await fetch(url)
+  let genreIds = await response.json()
+  let genreList = genreIds.genres
+  return genreList
+}
