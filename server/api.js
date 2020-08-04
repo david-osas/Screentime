@@ -1,8 +1,6 @@
 require('dotenv').config()
 const fetch = require('node-fetch')
 
-
-
 exports.getShowing = async function() {
   let pagesData = []
   let moviesList = []

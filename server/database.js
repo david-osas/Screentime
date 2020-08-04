@@ -18,7 +18,7 @@ exports.sess = {
   saveUninitialized: false,
   cookie: {
     // 7 * 24 * 60 * 60 * 1000
-    maxAge: 300000
+    maxAge: 10 * 60 * 1000
   },
   store: new MongoStore({mongooseConnection: mongoose.connection})
 }
@@ -77,7 +77,7 @@ const Article = mongoose.model('Article', articlesSchema)
 
 const modelList = ['movies', 'populars', 'showings', 'genres', 'articles']
 
-exports.setData = async function() {
+async function setData() {
   let resShowing = await getShowing()
   try {
     await Movie.insertMany(resShowing.moviesList)
@@ -125,14 +125,25 @@ exports.setData = async function() {
   console.log('i am done updating')
 }
 
-exports.dropCollections = function(){
+function isUpdating(req, res, next){
+  if(update){
+    console.log('waiting for update')
+    setTimeout(isUpdating, 3000, req, res, next)
+  }else{
+    next()
+  }
+}
+
+function startUpdate(){
+  console.log('Update is starting')
+
+  update = true
   for(let i = 0; i < modelList.length; i++){
     mongoose.connection.db.dropCollection(modelList[i], function(err, result) {
       console.log('I have dropped '+ modelList[i])
     })
   }
-
-
+  setData()
 }
 
 exports.Movie = Movie
@@ -142,7 +153,7 @@ exports.User = User
 exports.Genre = Genre
 exports.Article = Article
 exports.session = session
-exports.setUpdate = () => {
-  update = true
-  console.log(update)
-}
+exports.setData = setData
+
+exports.isUpdating = isUpdating
+exports.runUpdate = () => setInterval(startUpdate, 1 * 60 * 1000)

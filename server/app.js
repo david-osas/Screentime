@@ -4,11 +4,10 @@ const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
-const {session, sess, Movie, Popular, Showing, User, Genre, Article, setData} = require('./database')
+const {session, sess, Movie, Popular, Showing, User, Genre, Article, isUpdating, runUpdate} = require('./database')
 const {getCinemas} = require('./cinema')
 const {isAuthenticated} = require('./middleware')
 const {platforms} = require('./streamingPlatforms')
-const {isUpdating, runUpdate} = require('./update')
 
 const app = express()
 
@@ -17,9 +16,7 @@ if (app.get('env') === 'production') {
   sess.cookie.secure = true
 }
 
-//, isAuthenticated
-app.use(bodyParser.urlencoded({extended: true}), session(sess))
-
+app.use(bodyParser.urlencoded({extended: true}), session(sess), isAuthenticated, isUpdating)
 
 
 app.get('/top-news', (req, res) => {
@@ -294,12 +291,12 @@ app.get('/*', (req, res) => {
   res.send('welcome home')
 })
 
-//setData()
+
 app.listen(5000, () => {
   console.log('server started on port 5000')
-  let intervaleObj = runUpdate()
-  setTimeout(() => {
-    clearInterval(intervaleObj)
-    console.log('Updating has stopped')
-  }, 10 * 60 * 1000)
+  // let intervaleObj = runUpdate()
+  // setTimeout(() => {
+  //   clearInterval(intervaleObj)
+  //   console.log('Updating has stopped')
+  // }, 5 * 60 * 1000)
 })
