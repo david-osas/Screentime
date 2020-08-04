@@ -1,37 +1,36 @@
 import React from 'react';
-import avengers from '../images/avengers.png'
+// import avengers from '../images/avengers.png'
+import {TextField, Button, Grid} from '@material-ui/core'
 
-function Login() {
+function Login(){
+  let inputs = ['email', 'password']
 
-  return (<div>
-    <h4 className='logo'><span className='screentime'>Screen</span>time</h4>
-    <h1 className='login-title'>Welcome to Screentime, the new frontier for movies</h1>
-    <div className='login'>    
-    <div className='row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 align-items-center'>
-      <div className='col'>
-        <img src={avengers} alt='login' className='login-img'/>
-      </div>
-      <div className='col'>
+  return (
+    <div>
+      <Grid className='login-grid' container spacing={3} >
+
+        <Grid className='login-image' item md={6} sm={12}>
+          
+        </Grid>
+        <Grid item md={6} sm={12}>
           <form>
-            <div className='form-group'>
-              <input type='text' className='form-control' placeholder='Username'/>
-            </div>
-            <div className='form-group'>
-              <input type='email' className='form-control' placeholder='Email address'/>
-            </div>
-            <div className='form-group'>
-              <input type='password' className='form-control' placeholder='Password'/>
-            </div>
-            <div className=' d-flex justify-content-center'>
-            <button type='submit' class='btn btn-primary mr-2 login-btn'>Login</button>
-            <button type='submit' class='btn btn-primary ml-2 login-btn'>Signup</button>
-            </div>
-          </form>
-      </div>
-</div>
-    </div>
+            {inputs.map((i) =>
+              <>
+              <TextField className='login-details' required id={i} type={i} label={i} variant='outlined' margin='dense' name={i}/>
+              <br/>
+              </>
+            )}
+            <Button className='login-details' variant="contained" color="primary" disableElevation>
+              Login
+            </Button>
 
-  </div>)
+          </form>
+          <p>or <Button color="primary">signup</Button></p>
+        </Grid>
+
+      </Grid>
+    </div>
+  )
 }
 
 export default Login

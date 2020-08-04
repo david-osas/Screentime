@@ -1,26 +1,11 @@
-body{
-  color: #ffffff;
-  background-color: #000f26;
-}
-.logo{
-  margin-top: 10px;
-}
-.screentime{
-  color: #f3353e;
-}
-
-.login-title{
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-}
-.login{
-  margin-top: 100px;
-}
-.login-img{
-  height: auto;
+.login-details{
   width: 100%;
 }
-.login-btn{
-  width: 200px;
+.login-image{
+  background-image: url('avengers.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.login-grid{
+  height: 600px
 }

@@ -1,13 +1,12 @@
 import React from 'react';
 import Login from './Login'
+import {Container} from '@material-ui/core/'
 
-function App(){
+function App() {
 
-  return (
-    <div className='container'>
-      <Login/>
-    </div>
-  )
+  return (<Container fixed="fixed">
+    <Login/>
+  </Container>)
 }
 
 export default App
