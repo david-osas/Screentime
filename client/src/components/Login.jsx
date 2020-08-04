@@ -1,5 +1,4 @@
 import React from 'react';
-// import avengers from '../images/avengers.png'
 import {TextField, Button, Grid} from '@material-ui/core'
 
 function Login(){
@@ -10,7 +9,7 @@ function Login(){
       <Grid className='login-grid' container spacing={3} >
 
         <Grid className='login-image' item md={6} sm={12}>
-          
+
         </Grid>
         <Grid item md={6} sm={12}>
           <form>
