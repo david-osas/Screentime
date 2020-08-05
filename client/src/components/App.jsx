@@ -1,12 +1,11 @@
 import React from 'react';
-import Login from './Login'
-import {Container} from '@material-ui/core/'
+import Register from './Register'
 
 function App() {
 
-  return (<Container fixed="fixed">
-    <Login/>
-  </Container>)
+  return (
+    <Register/>
+  )
 }
 
 export default App

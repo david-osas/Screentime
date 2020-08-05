@@ -1,11 +1,28 @@
+body{
+  background: #f1f3f7;
+}
+
+.login-grid{
+  height: 100vh;
+}
 .login-details{
   width: 100%;
 }
-.login-image{
-  background-image: url('avengers.png');
-  background-repeat: no-repeat;
-  background-size: contain;
+.grid-form{
+  padding-left: 20px;
+  padding-top: 10%;
 }
-.login-grid{
-  height: 600px
+.form-logo{
+  text-align: center;
+}
+
+.login-image{
+  background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)),url('avengers.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.login-image-details{
+  color: white;
+  text-align: center;
+  margin-top: 30%;
 }
