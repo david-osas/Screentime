@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {TextField, Button, Grid, FormControl} from '@material-ui/core'
+import Logo from './partials/Logo'
 
 
 function Register(){
@@ -27,7 +28,7 @@ function Register(){
           <h1 className='login-image-details'>Welcome to the new frontier of movies</h1>
         </Grid>
         <Grid item className='grid-form' md={3} sm={12}>
-          <h1 className='form-logo'><span style={{color: '#ff4800'}}>Screen</span>time</h1>
+          <h1 className='form-logo'><Logo/></h1>
 
           <form>
           <FormControl fullWidth>
