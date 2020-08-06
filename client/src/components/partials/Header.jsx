@@ -18,7 +18,7 @@ function Header() {
       <ul className="navbar-nav mr-auto">
         {
           navLinks.map((n) => <li key={n} className="nav-item">
-            <a className="nav-link">{n}</a>
+            <a href={'#'+n} className="nav-link">{n}</a>
           </li>)
         }
       </ul>

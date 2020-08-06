@@ -1,66 +1,98 @@
 import React, {useState} from 'react';
-import {TextField, Button, Grid, FormControl} from '@material-ui/core'
+import {Button} from '@material-ui/core'
 import Logo from './partials/Logo'
+import RegisterCard from './cards/RegisterCard'
+import RegisterInput from './RegisterInput'
+
+function Register() {
+  let [btnState, setBtnState] = useState(['login', 'signup'])
+  let [username, setUsername] = useState('')
+  let [email, setEmail] = useState('')
+  let [password, setPassword] = useState('')
+  let [err, setErr] = useState([false, false])
+  let [action, setAction] = useState('login')
 
 
-function Register(){
-  let [inputs, setInputs] = useState(['email', 'password'])
-  let [btnState, setBtnState] = useState(['login','signup'])
-  let [response, setResponse] = useState('')
-
-  function toggle(e){
+  function toggle(e) {
     e.preventDefault()
-    setInputs(btnState[0] === 'login'? ['username', 'email', 'password'] : ['email', 'password'])
-    setBtnState(btnState[0] === 'login'? ['signup','login'] : ['login','signup'])
-    setResponse('')
+    setBtnState(
+      btnState[0] === 'login'
+      ? ['signup', 'login']
+      : ['login', 'signup'])
+    setEmail('')
+    setPassword('')
+    setUsername('')
+    setErr([false, false])
+    setAction(
+      action === 'login'?
+      'signup': 'login'
+    )
   }
 
-  function submit(e){
-    //e.preventDefault()
-    setResponse('password')
+  function submitDetails(e) {
+    e.preventDefault()
+    let response = 'both'
+    switch(response){
+      case 'both':
+      setErr([true, true])
+      break
+      case 'username':
+      setErr([true, false])
+      break
+      case 'email':
+      setErr([false, true])
+      break
+      default:
+      setErr([false, false])
+    }
   }
 
-  return (
-      <div >
-      <Grid className='login-grid' container >
+  function handleUsername(e){
+    setUsername(e.target.value)
+  }
 
-        <Grid className='login-image' item md={9} sm={12}>
-          <h1 className='login-image-details'>Welcome to the new frontier of movies</h1>
-        </Grid>
-        <Grid item className='grid-form' md={3} sm={12}>
-          <h1 className='form-logo'><Logo/></h1>
+  function handleEmail(e){
+    setEmail(e.target.value)
+  }
 
-          <form>
-          <FormControl fullWidth>
-            {inputs.map((i) =>
-              <>
-              <TextField className='login-details' name={i}
-                key={i} type={i} label={i}
-                variant='outlined' margin='dense'
+  function handlePassword(e){
+    setPassword(e.target.value)
+  }
 
-                error = {response === 'both'?
-                true: response === i?
-                true: false}
+  let inputList = ['username', 'email', 'password']
+  let stateNames = [username, email, password]
+  let handlers = [handleUsername, handleEmail, handlePassword]
 
-                helperText = {response === 'both'?
-                'invalid '+i: response === i?
-                'invalid '+i: ''}
-                required = {true}/>
-              <br/>
-              </>
+  return (<div className='register-row row'>
+    <div className='col-9'>
+      <RegisterCard/>
+    </div>
+    <div className='col-3 d-flex align-items-center'>
+      <div className='register-details'>
+        <h1 className='form-logo'><Logo/></h1>
+        <form onSubmit={submitDetails}>
+
+          {inputList.map((inp, index) =>
+            inp !== 'username'? <RegisterInput key={inp} attr={inp} input={stateNames[index]}
+              inputHandler={handlers[index]} wrong={err[index]}/>
+            : action === 'login'? null
+            : <RegisterInput key={inp} attr={inp} input={stateNames[index]}
+              inputHandler={handlers[index]} wrong={err[index]}/>
             )}
-            <Button type = 'submit' onSubmit={submit} className='login-details' variant="contained" color="primary" disableElevation>
-              {btnState[0]}
-            </Button>
-          </FormControl>
-          </form>
-          <p >or <Button color="primary" onClick={toggle}>{btnState[1]}</Button></p>
-        </Grid>
 
-      </Grid>
+          <Button type='submit'  variant="contained" color="primary" fullWidth>
+            {btnState[0]}
+          </Button>
+
+        </form>
+        <p style={{marginTop: 20}}>or
+          <Button color="primary" onClick={toggle}>{btnState[1]}</Button>
+        </p>
       </div>
-
+    </div>
+  </div>
   )
+
 }
 
 export default Register

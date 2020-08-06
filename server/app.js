@@ -19,7 +19,7 @@ if (app.get('env') === 'production') {
 app.use(bodyParser.urlencoded({extended: true}), session(sess), isAuthenticated, isUpdating)
 
 
-app.get('/top-news', (req, res) => {
+app.get('/server/top-news', (req, res) => {
   Article.find({}, (err, results) => {
     if (!err) {
       res.json({results})
@@ -29,7 +29,7 @@ app.get('/top-news', (req, res) => {
   })
 })
 
-app.get('/page-numbers', (req, res) => {
+app.get('/server/page-numbers', (req, res) => {
   Showing.findOne({}, (err, results) => {
     var total = results.totalMovies
 
@@ -47,17 +47,17 @@ app.get('/page-numbers', (req, res) => {
   })
 })
 
-app.get('/cinemas', (req, res) => {
+app.get('/server/cinemas', (req, res) => {
   res.json({cinemas: getCinemas()})
 })
 
-app.get('/genre-list', (req, res) => {
+app.get('/server/genre-list', (req, res) => {
   Genre.find({}, (err, results) => {
     res.json({results})
   })
 })
 
-app.patch('/subscribe', (req, res) => {
+app.patch('/server/subscribe', (req, res) => {
   User.findOne({
     email: req.session.user
   }, (err, results) => {
@@ -76,7 +76,7 @@ app.patch('/subscribe', (req, res) => {
   })
 })
 
-app.patch('/unsubscribe', (req, res) => {
+app.patch('/server/unsubscribe', (req, res) => {
   User.findOne({
     email: req.session.user
   }, (err, results) => {
@@ -90,7 +90,7 @@ app.patch('/unsubscribe', (req, res) => {
   })
 })
 
-app.get('/search-movie', (req, res) => {
+app.get('/server/search-movie', (req, res) => {
 
   Movie.findOne({
     title: req.body.movie.toLowerCase()
@@ -107,7 +107,7 @@ app.get('/search-movie', (req, res) => {
   })
 })
 
-app.patch('/like-movie', (req, res) => {
+app.patch('/server/like-movie', (req, res) => {
   User.findOneAndUpdate({
     email: req.session.user
   }, {
@@ -123,7 +123,7 @@ app.patch('/like-movie', (req, res) => {
   })
 })
 
-app.patch('/unlike-movie', (req, res) => {
+app.patch('/server/unlike-movie', (req, res) => {
   User.findOne({
     email: req.session.user
   }, (err, results) => {
@@ -137,7 +137,7 @@ app.patch('/unlike-movie', (req, res) => {
   })
 })
 
-app.patch('/add-to-watchlist', (req, res) => {
+app.patch('/server/add-to-watchlist', (req, res) => {
   User.findOneAndUpdate({
     email: req.session.user
   }, {
@@ -153,7 +153,7 @@ app.patch('/add-to-watchlist', (req, res) => {
   })
 })
 
-app.patch('/remove-from-watchlist', (req, res) => {
+app.patch('/server/remove-from-watchlist', (req, res) => {
   User.findOne({
     email: req.session.user
   }, (err, results) => {
@@ -167,7 +167,7 @@ app.patch('/remove-from-watchlist', (req, res) => {
   })
 })
 
-app.get('/movies/:pageId', (req, res) => {
+app.get('/server/movies/:pageId', (req, res) => {
   var page = req.params.pageId
   var size = (page - 1) * 16
 
@@ -183,7 +183,7 @@ app.get('/movies/:pageId', (req, res) => {
   })
 })
 
-app.get('/popular-movies', (req, res) => {
+app.get('/server/popular-movies', (req, res) => {
   Popular.find({}, (err, results) => {
     if (!err) {
       res.json({popularMovies: results, platforms})
@@ -194,7 +194,7 @@ app.get('/popular-movies', (req, res) => {
 
 })
 
-app.post('/signup', async (req, res) => {
+app.post('/server/signup', async (req, res) => {
   let name = false
   let mail = false
   await User.findOne({
@@ -248,7 +248,7 @@ app.post('/signup', async (req, res) => {
   })
 })
 
-app.post('/login', (req, res) => {
+app.post('/server/login', (req, res) => {
 
   User.findOne({
     email: req.body.email
@@ -269,20 +269,20 @@ app.post('/login', (req, res) => {
 
 })
 
-app.delete('/logout', (req, res) => {
+app.delete('/server/logout', (req, res) => {
   req.session.destroy(() => {
     res.send('user logged out')
   })
 })
 
-app.get('/checking', (req, res) => {
+app.get('/server/checking', (req, res) => {
   if (req.session.user) {
     res.send('you are signed in bro')
   } else {
     res.send('get the hell outta here')
   }
 })
-app.get('/register', (req, res) => {
+app.get('/server/register', (req, res) => {
   console.log('i got here')
   res.send('login')
 })
