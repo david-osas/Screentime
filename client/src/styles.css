@@ -3,6 +3,7 @@ body{
 }
 
 /* Register component */
+
 .register-row{
   width: 100%;
   height: 100vh;
@@ -16,6 +17,7 @@ body{
 }
 
 /* Carousel component */
+
 .carousel-img{
   max-height: 50vh;
 }
@@ -28,10 +30,12 @@ body{
 }
 
 
-/* Item components */
-.item-jumbo{
-  height: 60vh;
-  padding: 0
+
+/* Item component */
+.item-img{
+  width: 100%;
+  height: 400px;
+  object-fit: contain;
 }
 .item-fill{
   width: 100%;

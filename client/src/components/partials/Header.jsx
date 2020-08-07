@@ -4,10 +4,11 @@ import {TextField, Button} from '@material-ui/core'
 
 function Header() {
 
-  let navLinks = ['Now Showing', 'Trending', 'News']
+  let navTitles = ['Now Showing', 'Trending', 'News']
+  let navLinks = ['/now-showing', '/trending-movies', '/latest-news']
 
   return (<nav className="navbar navbar-expand-lg navbar-light bg-light">
-    <a className="navbar-brand" >
+    <a className="navbar-brand" href='/'>
       <h4> <Logo/> </h4>
     </a>
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,8 +18,8 @@ function Header() {
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav mr-auto">
         {
-          navLinks.map((n) => <li key={n} className="nav-item">
-            <a href={'#'+n} className="nav-link">{n}</a>
+          navTitles.map((n,i) => <li key={n} className="nav-item">
+            <a href={navLinks[i]} className="nav-link">{n}</a>
           </li>)
         }
       </ul>

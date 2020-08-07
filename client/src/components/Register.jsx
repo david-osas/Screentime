@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Button} from '@material-ui/core'
+import {useHistory} from 'react-router-dom'
 import Logo from './partials/Logo'
 import RegisterCard from './cards/RegisterCard'
 import RegisterInput from './RegisterInput'
@@ -11,6 +12,7 @@ function Register() {
   let [password, setPassword] = useState('')
   let [err, setErr] = useState([false, false])
   let [action, setAction] = useState('login')
+  let history = useHistory()
 
 
   function toggle(e) {
@@ -31,20 +33,21 @@ function Register() {
 
   function submitDetails(e) {
     e.preventDefault()
-    let response = 'both'
-    switch(response){
-      case 'both':
-      setErr([true, true])
-      break
-      case 'username':
-      setErr([true, false])
-      break
-      case 'email':
-      setErr([false, true])
-      break
-      default:
-      setErr([false, false])
-    }
+    // let response = 'both'
+    // switch(response){
+    //   case 'both':
+    //   setErr([true, true])
+    //   break
+    //   case 'username':
+    //   setErr([true, false])
+    //   break
+    //   case 'email':
+    //   setErr([false, true])
+    //   break
+    //   default:
+    //   setErr([false, false])
+    // }
+    history.push('/')
   }
 
   function handleUsername(e){
@@ -64,11 +67,11 @@ function Register() {
   let handlers = [handleUsername, handleEmail, handlePassword]
 
   return (<div className='register-row row'>
-    <div className='col-9'>
+    <div className='col-lg-9 mb-4 mb-lg-0'>
       <RegisterCard/>
     </div>
-    <div className='col-3 d-flex align-items-center'>
-      <div className='register-details'>
+    <div className='col-lg-3 d-flex align-items-center mb-4 mb-lg-0'>
+      <div className='register-details container'>
         <h1 className='form-logo'><Logo/></h1>
         <form onSubmit={submitDetails}>
 

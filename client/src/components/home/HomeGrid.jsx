@@ -1,6 +1,6 @@
 import React from 'react'
-import NewsCard from './NewsCard'
-import MovieCard from './MovieCard'
+import NewsCard from '../cards/NewsCard'
+import MovieCard from '../cards/MovieCard'
 
 function HomeGrid(props) {
   let nums = [1, 2, 3, 4]

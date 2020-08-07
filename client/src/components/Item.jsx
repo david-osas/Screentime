@@ -1,13 +1,13 @@
 import React from 'react'
 import Header from './partials/Header'
-import Jumbotron from './Jumbotron'
+
 
 function Item(){
 
   return (
     <div className='container'>
       <Header/>
-      <Jumbotron place='item'/>
+      <img src={require('./avengers.png')} className='item-img img-fluid bg-dark' alt='item' />
     </div>
   )
 }
