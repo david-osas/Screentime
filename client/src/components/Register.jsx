@@ -31,8 +31,22 @@ function Register() {
     )
   }
 
-  function submitDetails(e) {
+  async function submitDetails(e) {
     e.preventDefault()
+
+    let fetchOptions = {
+      method: 'POST',
+      body: JSON.stringify({email, username, password}),
+      headers: {"Content-Type": "application/json"}
+    }
+
+    if(action === 'login'){
+      let response = await fetch('http://localhost:5000/server/login', fetchOptions)
+      console.log(response.json())
+
+    }else{
+
+    }
     // let response = 'both'
     // switch(response){
     //   case 'both':
@@ -47,7 +61,7 @@ function Register() {
     //   default:
     //   setErr([false, false])
     // }
-    history.push('/')
+    //history.push('/')
   }
 
   function handleUsername(e){

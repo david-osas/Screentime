@@ -1,6 +1,6 @@
 //jshint esversion: 6
 const express = require('express')
-const bodyParser = require('body-parser')
+const cors = require('cors')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
@@ -17,7 +17,7 @@ if (app.get('env') === 'production') {
   sess.cookie.secure = true
 }
 
-app.use(bodyParser.urlencoded({extended: true}), session(sess), isAuthenticated, isUpdating)
+app.use(express.json(), cors(), session(sess),isAuthenticated, isUpdating)
 
 
 app.get('/server/top-news', (req, res) => {
@@ -64,11 +64,11 @@ app.patch('/server/subscribe', (req, res) => {
   }, (err, results) => {
     if (!err) {
       if (results.subscribed.length >= 5) {
-        return res.send('failure')
+        return res.json({feedBack: 'failure'})
       } else {
         results.subscribed.push(req.body.genreId)
         results.save()
-        return res.send('success')
+        return res.json({feedBack: 'success'})
       }
 
     } else {
@@ -84,7 +84,7 @@ app.patch('/server/unsubscribe', (req, res) => {
     if (!err) {
       results.subscribed = results.subscribed.filter(s => s !== req.body.genreId)
       results.save()
-      return res.send('success')
+      return res.json({feedBack: 'success'})
     } else {
       console.log(err)
     }
@@ -105,7 +105,7 @@ app.get('/server/search-movie', (req, res) => {
       if(results){
         res.json({results})
       }else{
-        res.send('failure')
+        res.json({feedBack: 'failure'})
       }
     } else {
       console.log(err)
@@ -122,7 +122,7 @@ app.patch('/server/like-movie', (req, res) => {
     }
   }, (err, results) => {
     if (!err) {
-      res.send('success')
+      res.json({feedBack: 'success'})
     } else {
       console.log(err)
     }
@@ -136,7 +136,7 @@ app.patch('/server/unlike-movie', (req, res) => {
     if (!err) {
       results.liked = results.liked.filter(s => s !== req.body.movieId)
       results.save()
-      res.send('success')
+      res.json({feedBack: 'success'})
     } else {
       console.log(err)
     }
@@ -152,7 +152,7 @@ app.patch('/server/add-to-watchlist', (req, res) => {
     }
   }, (err, results) => {
     if (!err) {
-      res.send('success')
+      res.json({feedBack: 'success'})
     } else {
       console.log(err)
     }
@@ -166,7 +166,7 @@ app.patch('/server/remove-from-watchlist', (req, res) => {
     if (!err) {
       results.watchlist = results.watchlist.filter(s => s !== req.body.movieId)
       results.save()
-      res.send('success')
+      res.json({feedBack: 'success'})
     } else {
       console.log(err)
     }
@@ -220,11 +220,11 @@ app.post('/server/signup', async (req, res) => {
   })
 
   if (name && mail) {
-    return res.send('both')
+    return res.json({feedBack: 'both'})
   } else if (name) {
-    return res.send('username')
+    return res.json({feedBack: 'username'})
   } else if (mail) {
-    return res.send('email')
+    return res.json({feedBack: 'email'})
   }
 
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
@@ -240,15 +240,15 @@ app.post('/server/signup', async (req, res) => {
       newUser.save((err) => {
         if (!err) {
           req.session.user = req.body.email
-          return res.send('success')
+          return res.json({feedBack: 'success'})
         } else {
           console.log(err)
-          return res.send('failure')
+          return res.json({feedBack: 'failure'})
         }
       })
     } else {
       console.log(err)
-      return res.send('failure')
+      return res.json({feedBack: 'failure'})
     }
 
   })
@@ -263,13 +263,13 @@ app.post('/server/login', (req, res) => {
       bcrypt.compare(req.body.password, results.password, (err, comp) => {
         if (comp) {
           req.session.user = req.body.email
-          return res.send({username: results.username, liked: results.liked, history: results.history, subscribed: results.subscribed})
+          return res.json({username: results.username, liked: results.liked, history: results.history, subscribed: results.subscribed})
         } else {
-          return res.send('password')
+          return res.json({feedBack: 'password'})
         }
       })
     } else {
-      return res.send('email')
+      return res.json({feedBack: 'email'})
     }
   })
 
@@ -277,7 +277,7 @@ app.post('/server/login', (req, res) => {
 
 app.delete('/server/logout', (req, res) => {
   req.session.destroy(() => {
-    res.send('user logged out')
+    res.json({feedBack: 'logged out'})
   })
 })
 

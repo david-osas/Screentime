@@ -18,7 +18,7 @@ exports.sess = {
   saveUninitialized: false,
   cookie: {
     // 7 * 24 * 60 * 60 * 1000
-    maxAge: 10 * 60 * 1000
+    maxAge: 7 * 24 * 60 * 60 * 1000
   },
   store: new MongoStore({mongooseConnection: mongoose.connection})
 }

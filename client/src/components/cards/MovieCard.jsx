@@ -12,6 +12,7 @@ function MovieCard(props) {
           </div>
         : <div className="card-footer">
           Card footer
+          <a href='/item/2' className="card-link stretched-link"></a>
         </div>
     }
 
