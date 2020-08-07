@@ -1,6 +1,13 @@
 require('dotenv').config()
 const fetch = require('node-fetch')
 
+exports.getTrailer = async function(id){
+  let url = 'https://api.themoviedb.org/3/movie/'+id+'/videos?api_key='+process.env.TMB_KEY+'&language=en-US'
+  let response = await fetch(url)
+  let resJson = await response.json()
+  return resJson.results[0].key
+}
+
 exports.getShowing = async function() {
   let pagesData = []
   let moviesList = []

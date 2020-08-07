@@ -8,6 +8,7 @@ const {session, sess, Movie, Popular, Showing, User, Genre, Article, isUpdating,
 const {getCinemas} = require('./cinema')
 const {isAuthenticated} = require('./middleware')
 const {platforms} = require('./streamingPlatforms')
+const {getTrailer} = require('./api')
 
 const app = express()
 
@@ -88,6 +89,11 @@ app.patch('/server/unsubscribe', (req, res) => {
       console.log(err)
     }
   })
+})
+
+app.get('/server/trailer/:id', async (req, res) => {
+  let key = await getTrailer(req.params.id)
+  return res.json({key})
 })
 
 app.get('/server/search-movie', (req, res) => {
