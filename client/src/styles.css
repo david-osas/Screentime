@@ -28,7 +28,12 @@ body{
 .news-tint{
   background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5));
 }
-
+.movie-img{
+  height: 500px;
+}
+.news-img{
+  height: 300px;
+}
 
 
 /* Item component */

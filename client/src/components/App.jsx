@@ -1,15 +1,34 @@
-import React from 'react'
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import React, {useEffect} from 'react'
+import {Route, Switch, useLocation} from 'react-router-dom'
+import {useDispatch, useSelector} from 'react-redux'
 import Register from './Register'
 import Home from './home/Home'
 import GridList from './GridList'
 import Item from './Item'
 import '../styles.css'
+import {handleInitial} from '../actions/initial'
+import {loading} from '../actions/loading'
 
 function App() {
+  let load = useSelector(state => state.loading)
+  let location = useLocation()
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if(location.pathname !== '/register'){
+      dispatch(handleInitial())
+    }else{
+      dispatch(loading(false))
+    }
+    console.log('i am here')
+  }, [dispatch,location])
+
+  if(load){
+    return <h1>i am loading bro</h1>
+  }
 
   return (
-    <BrowserRouter>
 
       <Switch>
         <Route exact path='/'>
@@ -41,7 +60,6 @@ function App() {
         </Route>
       </Switch>
 
-    </BrowserRouter>
   )
 }
 

@@ -17,13 +17,13 @@ if (app.get('env') === 'production') {
   sess.cookie.secure = true
 }
 
-app.use(express.json(), cors(), session(sess),isAuthenticated, isUpdating)
+app.use(express.json(), cors(), session(sess), isUpdating)
 
 
 app.get('/server/top-news', (req, res) => {
   Article.find({}, (err, results) => {
     if (!err) {
-      res.json({results})
+      res.json(results)
     } else {
       console.log(err)
     }
@@ -40,7 +40,7 @@ app.get('/server/page-numbers', (req, res) => {
       if (total % 16 > 0) {
         nums++
       }
-      res.json({num: nums.toString()})
+      res.json({num: nums})
     } else {
       console.log(err)
 
@@ -182,7 +182,7 @@ app.get('/server/movies/:pageId', (req, res) => {
     limit: 16
   }, (err, results) => {
     if (!err) {
-      res.json({results})
+      res.json(results)
     } else {
       console.log(err)
     }
@@ -263,7 +263,7 @@ app.post('/server/login', (req, res) => {
       bcrypt.compare(req.body.password, results.password, (err, comp) => {
         if (comp) {
           req.session.user = req.body.email
-          return res.json({username: results.username, liked: results.liked, history: results.history, subscribed: results.subscribed})
+          return res.json({feedBack: 'success'})
         } else {
           return res.json({feedBack: 'password'})
         }
@@ -273,6 +273,16 @@ app.post('/server/login', (req, res) => {
     }
   })
 
+})
+
+app.get('/server/get-user-details', (req, res) => {
+  User.findOne({
+    email: req.session.user
+  }, (err, results) => {
+    if(!err && results) {
+      res.json(results)
+    }
+  })
 })
 
 app.delete('/server/logout', (req, res) => {

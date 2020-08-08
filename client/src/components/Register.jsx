@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
 import {Button} from '@material-ui/core'
 import {useHistory} from 'react-router-dom'
+import {useDispatch} from 'react-redux'
 import Logo from './partials/Logo'
 import RegisterCard from './cards/RegisterCard'
 import RegisterInput from './RegisterInput'
+import {loading} from '../actions/loading'
 
 function Register() {
   let [btnState, setBtnState] = useState(['login', 'signup'])
   let [username, setUsername] = useState('')
   let [email, setEmail] = useState('')
   let [password, setPassword] = useState('')
-  let [err, setErr] = useState([false, false])
+  let [err, setErr] = useState([false, false, false])
   let [action, setAction] = useState('login')
   let history = useHistory()
+  let dispatch = useDispatch()
 
 
   function toggle(e) {
@@ -24,7 +27,7 @@ function Register() {
     setEmail('')
     setPassword('')
     setUsername('')
-    setErr([false, false])
+    setErr([false, false, false])
     setAction(
       action === 'login'?
       'signup': 'login'
@@ -33,6 +36,7 @@ function Register() {
 
   async function submitDetails(e) {
     e.preventDefault()
+    let resJson
 
     let fetchOptions = {
       method: 'POST',
@@ -42,26 +46,33 @@ function Register() {
 
     if(action === 'login'){
       let response = await fetch('http://localhost:5000/server/login', fetchOptions)
-      console.log(response.json())
+      resJson = await response.json()
 
     }else{
-
+      let response = await fetch('http://localhost:5000/server/signup', fetchOptions)
+      resJson = await response.json()
     }
-    // let response = 'both'
-    // switch(response){
-    //   case 'both':
-    //   setErr([true, true])
-    //   break
-    //   case 'username':
-    //   setErr([true, false])
-    //   break
-    //   case 'email':
-    //   setErr([false, true])
-    //   break
-    //   default:
-    //   setErr([false, false])
-    // }
-    //history.push('/')
+
+    switch(resJson.feedBack){
+      case 'both':
+      setErr([true, true, false])
+      break
+      case 'username':
+      setErr([true, false, false])
+      break
+      case 'email':
+      setErr([false, true, false])
+      break
+      case 'password':
+      setErr([false, false, true])
+      break
+      case 'success':
+      dispatch(loading(true))
+      history.push('/')
+      break
+      default:
+      setErr([false, false, false])
+    }
   }
 
   function handleUsername(e){

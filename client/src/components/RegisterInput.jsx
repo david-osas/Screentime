@@ -7,7 +7,7 @@ function RegisterInput(props){
     <div className='form-group'>
       <TextField required fullWidth name={props.attr} type={props.attr} label={props.attr} variant = 'outlined'
         value = {props.input} onChange={props.inputHandler}
-      error= {props.wrong} helperText= {props.wrong && 'invalid email'}/>
+      error= {props.wrong} helperText= {props.wrong && 'invalid '+props.attr}/>
     </div>
   )
 }
