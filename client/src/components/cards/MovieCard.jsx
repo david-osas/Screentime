@@ -12,7 +12,7 @@ function MovieCard(props) {
           </div>
         : <div className="card-footer">
           {props.title.toUpperCase()}
-          <a href='/item/2' className="card-link stretched-link"></a>
+          <a href={'/item/'+props.id} className="card-link stretched-link"></a>
         </div>
     }
 

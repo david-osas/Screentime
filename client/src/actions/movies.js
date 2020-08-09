@@ -36,7 +36,7 @@ export function setNowShowing(pageId){
             })
             dispatch(addNowShowing(movies))
             if(pageId === 1){
-              dispatch(addTopShowing(resJson.splice(0,4)))
+              dispatch(addTopShowing(resJson.splice(0,8)))
             }
           })
   }

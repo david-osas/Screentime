@@ -22,6 +22,12 @@ body{
   max-height: 50vh;
 }
 
+/* Home component */
+.home-rule{
+  width: 30%;
+  margin-top: 0;
+  background-color: grey;
+}
 
 /* Card components */
 
@@ -29,11 +35,9 @@ body{
   background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5));
 }
 .movie-img{
-  height: 500px;
-}
-.news-img{
   height: 300px;
 }
+
 
 
 /* Item component */
