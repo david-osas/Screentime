@@ -36,15 +36,15 @@ function App() {
         </Route>
 
         <Route exact path='/now-showing'>
-          <GridList/>
+          <GridList place='nowShowing'/>
         </Route>
 
         <Route exact path='/trending-movies'>
-          <GridList/>
+          <GridList place='trending'/>
         </Route>
 
         <Route exact path='/latest-news'>
-          <GridList/>
+          <GridList place='news'/>
         </Route>
 
         <Route exact path='/item/:itemId'>

@@ -1,13 +1,17 @@
 import React from 'react'
 import {useLocation} from 'react-router-dom'
+import {useSelector} from 'react-redux'
 import Jumbotron from './Jumbotron'
 import MovieCard from './cards/MovieCard'
 import NewsCard from './cards/NewsCard'
 import Header from './partials/Header'
 
-function GridList() {
+function GridList(props) {
   let location = useLocation()
-  let numbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+  let nowShowing = useSelector(state => Object.entries(state.nowShowing.movies))
+  let trending = useSelector(state => Object.entries(state.trending))
+  let news = useSelector(state => Object.entries(state.news))
+
   let breakpoints
   if(location.pathname !== '/latest-news'){
     breakpoints = 'row row-cols-1 row-cols-lg-4 row-cols-md-2'
@@ -19,17 +23,23 @@ function GridList() {
     <Header/>
     <Jumbotron place='list'/>
     <div className={breakpoints}>
-      {
-        numbers.map((n) => <div key={n} className='col mb-4'>
-          {location.pathname === '/latest-news'?
-            <NewsCard />
-            : <MovieCard place='list'/>}
+      {props.place === 'nowShowing' &&
+      nowShowing.map((t) => <div key={t[1].id} className='col mb-4'>
+        <MovieCard place='list' poster={t[1].posterPath} id={t[1].id} title={t[1].title}/>
+      </div>)}
 
-        </div>)
-      }
-    </div>
+      {props.place === 'trending' &&
+      trending.map((t) => <div key={t[1].id} className='col mb-4'>
+        <MovieCard place='list' poster={t[1].posterPath} id={t[1].id} title={t[1].title}/>
+      </div>)}
 
-  </div>)
+      {props.place === 'news' &&
+      news.map((t) => <div className='col mb-4' key={t[1]._id}>
+        <NewsCard poster={t[1].urlToImage} id={t[1]._id} title={t[1].title}/>
+    </div>)}
+  </div>
+
+</div>)
 }
 
 export default GridList
