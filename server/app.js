@@ -49,13 +49,17 @@ app.get('/server/page-numbers', (req, res) => {
 })
 
 app.get('/server/cinemas', (req, res) => {
-  res.json({cinemas: getCinemas()})
+  res.json(getCinemas())
 })
 
-app.get('/server/genre-list', (req, res) => {
-  Genre.find({}, (err, results) => {
-    res.json({results})
-  })
+app.post('/server/genre',async (req, res) => {
+  let genres = []
+  for(let g of req.body.genre){
+    await  Genre.findOne({id: g}, (err, results) => {
+        genres = [...genres, results.name]
+      })
+  }
+  res.json({genres})
 })
 
 app.patch('/server/subscribe', (req, res) => {

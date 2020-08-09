@@ -60,3 +60,13 @@ body{
   margin-top: 0;
   margin-bottom: 50px;
 }
+.trailer-div{
+  margin-top: 50px;
+}
+.trailer{
+  width: 70vh;
+  height: 50vh;
+}
+.star{
+  color: gold;
+}

@@ -11,7 +11,7 @@ function GridList(props) {
   let location = useLocation()
   let nowShowing = useSelector(state => Object.entries(state.nowShowing.movies))
   let trending = useSelector(state => Object.entries(state.trending))
-  let news = useSelector(state => Object.entries(state.news))
+  let news = useSelector(state => state.news)
   let [totalPages, setTotal] = useState(1)
   let history = useHistory()
   let {page} = useParams()
@@ -36,6 +36,7 @@ function GridList(props) {
     breakpoints = 'row row-cols-1 row-cols-lg-2'
   }
 
+
   return (<div className='container'>
     <Header/>
     <Jumbotron place='list'/>
@@ -51,8 +52,8 @@ function GridList(props) {
       </div>)}
 
       {props.type === 'news' &&
-      news.map((t) => <div className='col mb-4' key={t[1]._id}>
-        <NewsCard poster={t[1].urlToImage} id={t[1]._id} title={t[1].title}/>
+      news.map((t) => <div className='col mb-4' key={t._id}>
+        <NewsCard poster={t.urlToImage} url={t.url} title={t.title}/>
     </div>)}
     {props.type === 'nowShowing' &&
     <Pagination className='mx-auto my-4' count={totalPages} color='primary' onChange={handlePage}/>}

@@ -13,5 +13,5 @@ exports.getCinemas = function (){
     prices.push(Math.floor(Math.random() * 8) + 8)
   }
 
-  return {cinemas: [...cinemas], prices}
+  return {places: [...cinemas], prices}
 }

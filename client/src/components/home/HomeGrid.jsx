@@ -5,9 +5,8 @@ import MovieCard from '../cards/MovieCard'
 
 function HomeGrid(props) {
   let topShowing = useSelector(state => state.nowShowing.top)
-  let topArticles = useSelector(state => Object.entries(state.news).splice(0,4))
-  let topTrending = useSelector(state => Object.entries(state.trending).splice(0,8))
-
+  let topArticles = useSelector(state => state.news.slice(0,4))
+  let topTrending = useSelector(state => Object.entries(state.trending).slice(0,8))
 
 
   return (props.gridName !== 'News'?
@@ -24,8 +23,8 @@ function HomeGrid(props) {
     </div>
     :
   <div className='row row-cols-1 row-cols-lg-2'>
-    {topArticles.map((t) => <div className='col mb-4' key={t[1]._id}>
-          <NewsCard poster={t[1].urlToImage} id={t[1]._id} title={t[1].title}/>
+    {topArticles.map((t) => <div className='col mb-4' key={t._id}>
+          <NewsCard poster={t.urlToImage} url={t.url} title={t.title}/>
         </div>)}
   </div>)
 }
