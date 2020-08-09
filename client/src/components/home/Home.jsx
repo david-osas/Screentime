@@ -7,7 +7,7 @@ import {Button} from '@material-ui/core'
 
 function Home(){
   let sections = ['Now Showing', 'Trending', 'News']
-  let secLinks = ['/now-showing', '/trending-movies', '/latest-news']
+  let secLinks = ['/now-showing/1', '/trending-movies', '/latest-news']
 
   return(<div className='container'>
     <Header/>

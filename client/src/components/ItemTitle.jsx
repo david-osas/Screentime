@@ -1,10 +1,10 @@
 import React from 'react'
 
-function ItemTitle(){
+function ItemTitle(props){
 
   return (
     <>
-    <h1 className='item-title'> Movie </h1>
+    <h1 className='item-title'> {props.title.toUpperCase()} </h1>
     <hr className='item-rule'/>
     </>
   )

@@ -17,12 +17,20 @@ function App() {
 
   useEffect(() => {
     if(location.pathname !== '/register'){
-      dispatch(handleInitial())
+      let path = location.pathname.split('/')
+      if(path[2] === 'nowShowing'){
+        dispatch(handleInitial(path[3]))
+      }else if(path[1] === 'now-showing'){
+        dispatch(handleInitial(path[2]))
+      }
+      else{
+        dispatch(handleInitial(1))
+      }
     }else{
       dispatch(loading(false))
     }
-    console.log('i am here')
-  }, [dispatch,location])
+  }, [location,dispatch])
+
 
   if(load){
     return <h1>i am loading bro</h1>
@@ -35,19 +43,19 @@ function App() {
           <Home/>
         </Route>
 
-        <Route exact path='/now-showing'>
-          <GridList place='nowShowing'/>
+        <Route exact path='/now-showing/:page'>
+          <GridList type='nowShowing'/>
         </Route>
 
         <Route exact path='/trending-movies'>
-          <GridList place='trending'/>
+          <GridList type='trending'/>
         </Route>
 
         <Route exact path='/latest-news'>
-          <GridList place='news'/>
+          <GridList type='news'/>
         </Route>
 
-        <Route exact path='/item/:itemId'>
+        <Route exact path='/item/:type/:page/:itemId'>
           <Item/>
         </Route>
 

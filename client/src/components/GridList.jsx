@@ -1,31 +1,32 @@
 import React, {useEffect, useState} from 'react'
-import {useLocation} from 'react-router-dom'
-import {useSelector, useDispatch} from 'react-redux'
+import {useLocation, useHistory, useParams} from 'react-router-dom'
+import {useSelector} from 'react-redux'
 import Pagination from '@material-ui/lab/Pagination'
 import Jumbotron from './Jumbotron'
 import MovieCard from './cards/MovieCard'
 import NewsCard from './cards/NewsCard'
 import Header from './partials/Header'
-import {setNowShowing} from '../actions/movies'
 
 function GridList(props) {
   let location = useLocation()
   let nowShowing = useSelector(state => Object.entries(state.nowShowing.movies))
   let trending = useSelector(state => Object.entries(state.trending))
   let news = useSelector(state => Object.entries(state.news))
-  let [page, setPage] = useState(1)
-  let dispatch = useDispatch()
+  let [totalPages, setTotal] = useState(1)
+  let history = useHistory()
+  let {page} = useParams()
+
 
   useEffect(() => {
     fetch('http://localhost:5000/server/page-numbers')
     .then(response => response.json())
     .then(res => {
-      setPage(res.num)
+      setTotal(res.num)
     })
   }, [])
 
   function handlePage(event, value){
-    dispatch(setNowShowing(value))
+    history.push('/now-showing/'+value)
   }
 
   let breakpoints
@@ -39,22 +40,22 @@ function GridList(props) {
     <Header/>
     <Jumbotron place='list'/>
     <div className={breakpoints}>
-      {props.place === 'nowShowing' &&
+      {props.type === 'nowShowing' &&
       nowShowing.map((t) => <div key={t[1].id} className='col mb-4'>
-        <MovieCard place='list' poster={t[1].posterPath} id={t[1].id} title={t[1].title}/>
+        <MovieCard place='list' page={page} type='nowShowing' poster={t[1].posterPath} id={t[1].id} title={t[1].title} />
       </div>)}
 
-      {props.place === 'trending' &&
+      {props.type === 'trending' &&
       trending.map((t) => <div key={t[1].id} className='col mb-4'>
-        <MovieCard place='list' poster={t[1].posterPath} id={t[1].id} title={t[1].title}/>
+        <MovieCard place='list' page={page} type='trending' poster={t[1].posterPath} id={t[1].id} title={t[1].title}/>
       </div>)}
 
-      {props.place === 'news' &&
+      {props.type === 'news' &&
       news.map((t) => <div className='col mb-4' key={t[1]._id}>
         <NewsCard poster={t[1].urlToImage} id={t[1]._id} title={t[1].title}/>
     </div>)}
-    {props.place === 'nowShowing' &&
-    <Pagination className='mx-auto my-4' count={page} color='primary' onChange={handlePage}/>}
+    {props.type === 'nowShowing' &&
+    <Pagination className='mx-auto my-4' count={totalPages} color='primary' onChange={handlePage}/>}
 
   </div>
 </div>)

@@ -9,7 +9,7 @@ function NewsCard(props) {
         <h5 className="card-title">Card title</h5>
         <p className="card-text w-75">{props.title}</p>
       </div>
-      <a href={'/item/'+props.id} className="card-link stretched-link text-white"><h4>View</h4></a>
+      <a href={'/item/news/1/'+props.id} className="card-link stretched-link text-white"><h4>View</h4></a>
     </div>
   </div>)
 }

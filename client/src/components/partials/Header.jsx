@@ -5,7 +5,7 @@ import {TextField, Button} from '@material-ui/core'
 function Header() {
 
   let navTitles = ['Now Showing', 'Trending', 'News']
-  let navLinks = ['/now-showing', '/trending-movies', '/latest-news']
+  let navLinks = ['/now-showing/1', '/trending-movies', '/latest-news']
 
   return (<nav className="navbar navbar-expand-lg navbar-light bg-light">
     <a className="navbar-brand" href='/'>
