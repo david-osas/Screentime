@@ -295,17 +295,7 @@ app.delete('/server/logout', (req, res) => {
   })
 })
 
-app.get('/server/checking', (req, res) => {
-  if (req.session.user) {
-    res.send('you are signed in bro')
-  } else {
-    res.send('get the hell outta here')
-  }
-})
-app.get('/server/register', (req, res) => {
-  console.log('i got here')
-  res.send('login')
-})
+
 
 app.get('/*', (req, res) => {
   res.send('welcome home')

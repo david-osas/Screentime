@@ -1,6 +1,8 @@
 import React from 'react'
-import Logo from './Logo'
 import {TextField, Button} from '@material-ui/core'
+import {Link} from 'react-router-dom'
+import Logo from './Logo'
+
 
 function Header() {
 
@@ -8,9 +10,9 @@ function Header() {
   let navLinks = ['/now-showing/1', '/trending-movies', '/latest-news']
 
   return (<nav className="navbar navbar-expand-lg navbar-light bg-light">
-    <a className="navbar-brand" href='/'>
+    <Link className="navbar-brand" to='/'>
       <h4> <Logo/> </h4>
-    </a>
+    </Link>
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>
@@ -19,7 +21,7 @@ function Header() {
       <ul className="navbar-nav mr-auto">
         {
           navTitles.map((n,i) => <li key={n} className="nav-item">
-            <a href={navLinks[i]} className="nav-link">{n}</a>
+            <Link to={navLinks[i]} className="nav-link">{n}</Link>
           </li>)
         }
       </ul>

@@ -11,29 +11,22 @@ import {loading} from '../actions/loading'
 
 function App() {
   let load = useSelector(state => state.loading)
+  let authed = useSelector(state => state.authed)
   let location = useLocation()
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if(location.pathname !== '/register'){
-      let path = location.pathname.split('/')
-      if(path[2] === 'nowShowing'){
-        dispatch(handleInitial(path[3]))
-      }else if(path[1] === 'now-showing'){
-        dispatch(handleInitial(path[2]))
-      }
-      else{
-        dispatch(handleInitial(1))
-      }
-    }else{
+    if(authed){
+      dispatch(handleInitial(1))
+    }else if(location.pathname === '/register'){
       dispatch(loading(false))
     }
-  }, [location,dispatch])
+  }, [authed,dispatch])
 
 
   if(load){
-    return <h1>i am loading bro</h1>
+    return <h1 className='loading'>Loading...</h1>
   }
 
   return (
@@ -44,7 +37,7 @@ function App() {
         </Route>
 
         <Route exact path='/now-showing/:page'>
-          <GridList type='nowShowing'/>
+          <GridList type='now-showing'/>
         </Route>
 
         <Route exact path='/trending-movies'>
@@ -55,7 +48,7 @@ function App() {
           <GridList type='news'/>
         </Route>
 
-        <Route exact path='/item/:type/:page/:itemId'>
+        <Route exact path='/item/:type/:itemId'>
           <Item/>
         </Route>
 

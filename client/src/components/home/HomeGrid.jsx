@@ -8,12 +8,11 @@ function HomeGrid(props) {
   let topArticles = useSelector(state => state.news.slice(0,4))
   let topTrending = useSelector(state => Object.entries(state.trending).slice(0,8))
 
-
   return (props.gridName !== 'News'?
     <div className='row row-cols-1 row-cols-lg-4 row-cols-md-2'>
     {props.gridName === 'Now Showing' &&
     topShowing.map((t) => <div className='col mb-4' key={t.id}>
-          <MovieCard place='home' type='nowShowing' poster={t.posterPath} id={t.id} title={t.title}/>
+          <MovieCard place='home' type='now-showing' poster={t.posterPath} id={t.id} title={t.title}/>
         </div>)}
 
     {props.gridName === 'Trending' &&

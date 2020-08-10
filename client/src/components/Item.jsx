@@ -46,11 +46,11 @@ function Item() {
         }
       })
 
-  })
+  },[itemId,key])
 
   function getItem(state){
     switch(type){
-      case 'nowShowing':
+      case 'now-showing':
       getCinemas()
       return state.nowShowing.movies[itemId]
       case 'trending':
@@ -63,7 +63,7 @@ function Item() {
   }
   let item = useSelector(state => getItem(state))
 
-  imageSrc = item.posterPath? 'https://image.tmdb.org/t/p/original'+item.posterPath: require('./avengers.png')
+  imageSrc = item.posterPath? 'https://image.tmdb.org/t/p/original'+item.posterPath: require('./theme.jpg')
   if(!genre){
     getGenre(item.genreIds)
   }

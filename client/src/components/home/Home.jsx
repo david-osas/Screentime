@@ -1,9 +1,10 @@
 import React, {Fragment} from 'react'
+import {Button} from '@material-ui/core'
+import {Link} from 'react-router-dom'
 import Header from '../partials/Header'
 import Carousel from '../carousel/Carousel'
 import Title from './Title'
 import HomeGrid from './HomeGrid'
-import {Button} from '@material-ui/core'
 
 function Home(){
   let sections = ['Now Showing', 'Trending', 'News']
@@ -16,7 +17,7 @@ function Home(){
       <Fragment key={s}>
         <Title title={s}/>
         <HomeGrid gridName={s}/>
-        <Button href={secLinks[i]} color="primary">Show more</Button>
+        <Link to={secLinks[i]}><Button color="primary">Show more</Button></Link>
       </Fragment>
     )}
 

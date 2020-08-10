@@ -3,7 +3,7 @@ import React from 'react'
 function NewsCard(props) {
 
   return (<div className="card text-white">
-    <img src={props.poster === null? require('../avengers.png'): props.poster} className="img-fluid movie-img" alt='news card'/>
+    <img src={props.poster === null? require('../theme.jpg'): props.poster} className="img-fluid movie-img" alt='news card'/>
     <div className="news-tint card-img-overlay d-flex align-items-end">
       <div className=''>
         <h5 className="card-title">Card title</h5>

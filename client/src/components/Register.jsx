@@ -6,6 +6,7 @@ import Logo from './partials/Logo'
 import RegisterCard from './cards/RegisterCard'
 import RegisterInput from './RegisterInput'
 import {loading} from '../actions/loading'
+import {authed} from '../actions/authed'
 
 function Register() {
   let [btnState, setBtnState] = useState(['login', 'signup'])
@@ -68,6 +69,7 @@ function Register() {
       break
       case 'success':
       dispatch(loading(true))
+      dispatch(authed(true))
       history.push('/')
       break
       default:

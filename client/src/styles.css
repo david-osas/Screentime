@@ -1,7 +1,9 @@
 body{
   background: #f1f3f7;
 }
-
+.loading{
+  text-align: center;
+}
 /* Register component */
 
 .register-row{

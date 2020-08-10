@@ -6,7 +6,7 @@ function CarouselImg(props){
     <div className={props.index === 0
         ? "carousel-item active"
         : "carousel-item"}>
-      <img src={require('../avengers.png')} className=" carousel-img img-fluid d-block w-100" alt={props.data}/>
+      <img src={require('../theme.jpg')} className=" carousel-img img-fluid d-block w-100" alt={props.data}/>
       <div className="carousel-caption d-none d-md-block">
         <h5>{props.data}</h5>
       </div>
