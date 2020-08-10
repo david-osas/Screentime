@@ -54,10 +54,12 @@ app.get('/server/cinemas', (req, res) => {
 
 app.post('/server/genre',async (req, res) => {
   let genres = []
-  for(let g of req.body.genre){
-    await  Genre.findOne({id: g}, (err, results) => {
-        genres = [...genres, results.name]
-      })
+  if(req.body.genre.length > 0){
+    for(let g of req.body.genre){
+      await  Genre.findOne({id: g}, (err, results) => {
+          genres = [...genres, results.name]
+        })
+    }
   }
   res.json({genres})
 })
@@ -100,14 +102,14 @@ app.get('/server/trailer/:id', async (req, res) => {
   return res.json({key})
 })
 
-app.get('/server/search-movie', (req, res) => {
+app.post('/server/search-movie', (req, res) => {
 
   Movie.findOne({
     title: req.body.movie.toLowerCase()
-  }, (err, results) => {
+  }, (err, result) => {
     if (!err) {
-      if(results){
-        res.json({results})
+      if(result){
+        res.json({result})
       }else{
         res.json({feedBack: 'failure'})
       }

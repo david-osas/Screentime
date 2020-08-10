@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {TextField, Button} from '@material-ui/core'
 import {Link} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import Logo from './Logo'
 
 
@@ -8,8 +9,32 @@ function Header() {
 
   let navTitles = ['Now Showing', 'Trending', 'News']
   let navLinks = ['/now-showing/1', '/trending-movies', '/latest-news']
+  let [search, setSearch] = useState('')
+  let [err, setErr] = useState(false)
+  let history = useHistory()
 
-  return (<nav className="navbar navbar-expand-lg navbar-light bg-light">
+  function handleSearch(e){
+    setSearch(e.target.value)
+  }
+
+  async function startSearch(e){
+    e.preventDefault()
+    let fetchOptions = {
+      method: 'POST',
+      body: JSON.stringify({movie: search}),
+      headers: {"Content-Type": "application/json"}
+    }
+    let response = await fetch('http://localhost:5000/server/search-movie', fetchOptions)
+    let res = await response.json()
+    if(res.feedBack){
+      setErr(true)
+    }else if(res.result){
+      const path = '/item/now-showing/'+res.result.id
+      history.push(path, {result: res.result})
+    }
+  }
+
+  return (<nav className="navbar navbar-expand-lg navbar-light bg-light mb-3">
     <Link className="navbar-brand" to='/'>
       <h4> <Logo/> </h4>
     </Link>
@@ -25,9 +50,11 @@ function Header() {
           </li>)
         }
       </ul>
-      <form className="form-inline my-2 my-lg-0">
-        <TextField id='search' type="search" className="form-control mr-sm-2 "
-          variant='outlined' margin='dense' placeholder="Search now showing"/>
+      <form className="form-inline my-2 my-lg-0" onSubmit={startSearch}>
+        <TextField required id='search' type="search" className="form-control mr-sm-2 "
+          variant='outlined' margin='dense' placeholder="Search now showing"
+        value={search} onChange={handleSearch}
+        error={err} helperText={err && 'No result found'}/>
         <Button type="submit" variant="contained" color="primary" disableElevation>Search</Button>
       </form>
     </div>

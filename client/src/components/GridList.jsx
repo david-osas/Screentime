@@ -68,7 +68,7 @@ function GridList(props) {
     {props.type === 'now-showing' &&
     <Pagination className='mx-auto my-4' count={totalPages} color='primary' onChange={handlePage}/>
     }
-    
+
   </div>
 </div>)
 }

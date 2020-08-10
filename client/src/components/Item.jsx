@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {useParams, useLocation} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 import StarIcon from '@material-ui/icons/Star';
 import Header from './partials/Header'
@@ -9,6 +9,7 @@ function Item() {
 
   let imageSrc
   let {itemId, type} = useParams()
+  let location = useLocation()
   let [key, setKey] = useState(null)
   let [genre, setIsGenre] = useState(null)
   let [cinemas, setCinemas] = useState(null)
@@ -61,7 +62,8 @@ function Item() {
       return state
     }
   }
-  let item = useSelector(state => getItem(state))
+  let value = useSelector(state => getItem(state))
+  let item = location.state? location.state.result : value
 
   imageSrc = item.posterPath? 'https://image.tmdb.org/t/p/original'+item.posterPath: require('./theme.jpg')
   if(!genre){
