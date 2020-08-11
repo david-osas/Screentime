@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react'
-import {Route, Switch, useLocation} from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
+import {Route, Switch, useLocation, useHistory} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import Register from './Register'
 import Home from './home/Home'
@@ -11,18 +11,31 @@ import {loading} from '../actions/loading'
 
 function App() {
   let load = useSelector(state => state.loading)
-  let authed = useSelector(state => state.authed)
+  let [authed, setAuthed] = useState(false)
   let location = useLocation()
+  let history = useHistory()
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if(authed){
-      dispatch(handleInitial(1))
-    }else if(location.pathname === '/register'){
+    if(location.pathname === '/register'){
       dispatch(loading(false))
+    }else if(!authed){
+      fetch('http://localhost:5000/server/get-user', {credentials: 'include'})
+      .then(response => response.json())
+      .then(res => {
+        if(res.feedBack === 'success'){
+          dispatch(handleInitial(1))
+          console.log('david')
+          setAuthed(true)
+        }else{
+          console.log('osas')
+          history.push('/register')
+        }
+      })
     }
-  }, [authed,dispatch])
+    console.log(location.pathname)
+  }, [authed,dispatch, history, location])
 
 
   if(load){

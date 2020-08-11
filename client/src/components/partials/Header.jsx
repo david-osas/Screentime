@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
-import {TextField, Button} from '@material-ui/core'
+import {TextField, Button, IconButton} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import {useHistory} from 'react-router-dom'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import Logo from './Logo'
 
 
@@ -57,19 +58,21 @@ function Header() {
         error={err} helperText={err && 'No result found'}/>
         <Button type="submit" variant="contained" color="primary" disableElevation>Search</Button>
       </form>
+      <div className='dropdown'>
+        <IconButton color='primary' aria-label='user account' className='dropdown-toggle'
+          id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <AccountCircleIcon fontSize='large'  className='dropdown'/>
+        </IconButton>
+        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <p className="dropdown-item">Hello David</p>
+          <div className="dropdown-divider"></div>
+          <Button className='dropdown-item'>Log out</Button>
+        </div>
+      </div>
+
     </div>
   </nav>)
 }
 
 export default Header;
- /* <li className="nav-item dropdown">
-  <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown
-  </a>
-  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-    <a className="dropdown-item" href="#">Action</a>
-    <a className="dropdown-item" href="#">Another action</a>
-    <div className="dropdown-divider"></div>
-    <a className="dropdown-item" href="#">Something else here</a>
-  </div>
-</li> */
+ 

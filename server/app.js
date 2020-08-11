@@ -17,7 +17,7 @@ if (app.get('env') === 'production') {
   sess.cookie.secure = true
 }
 
-app.use(express.json(), cors(), session(sess), isUpdating)
+app.use(express.json(), cors({credentials: true, origin: true}), session(sess), isUpdating)
 
 
 app.get('/server/top-news', (req, res) => {
@@ -192,14 +192,19 @@ app.post('/server/login', (req, res) => {
 
 })
 
-app.get('/server/get-user-details', (req, res) => {
-  User.findOne({
-    email: req.session.user
-  }, (err, results) => {
-    if(!err && results) {
-      res.json({username: results.username, email: results.email})
-    }
-  })
+app.get('/server/get-user', (req, res) => {
+
+  if(req.session.user){
+    User.findOne({
+      email: req.session.user
+    }, (err, results) => {
+      if(!err && results) {
+        res.json({username: results.username, email: results.email, feedBack: 'success'})
+      }
+    })
+  }else{
+    res.json({feedBack: 'failure'})
+  }
 })
 
 app.delete('/server/logout', (req, res) => {
