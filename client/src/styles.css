@@ -1,14 +1,11 @@
 body{
   background: #f1f3f7;
 }
-.loading{
+.center-text{
   text-align: center;
 }
 
 /* footer component */
-.footer-text{
-  text-align: center;
-}
 .heart{
   color : red;
 }
@@ -31,7 +28,10 @@ body{
 /* Carousel component */
 
 .carousel-img{
-  max-height: 50vh;
+  max-height: 60vh;
+}
+.carousel-text{
+  background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5));
 }
 
 /* Home component */

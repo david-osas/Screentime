@@ -47,7 +47,7 @@ function GridList(props) {
 
   return (<div className='container'>
     <Header/>
-    <Jumbotron />
+    <Jumbotron place={props.type}/>
     <div className={breakpoints}>
 
       {props.type === 'now-showing' &&

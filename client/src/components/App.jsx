@@ -36,7 +36,7 @@ function App() {
 
 
   if(load){
-    return <h1 className='loading'>Loading...</h1>
+    return <h1 className='center-text'>Loading...</h1>
   }
 
   return (
