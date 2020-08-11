@@ -45,11 +45,7 @@ const showingSchema = new mongoose.Schema({
 const userSchema = mongoose.Schema({
   username: String,
   password: String,
-  email: String,
-  liked: [],
-  watchlist: [],
-  history: [],
-  subscribed: []
+  email: String
 })
 
 const genreSchema = mongoose.Schema({id: Number, name: String})

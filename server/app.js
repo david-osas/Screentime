@@ -64,38 +64,7 @@ app.post('/server/genre',async (req, res) => {
   res.json({genres})
 })
 
-app.patch('/server/subscribe', (req, res) => {
-  User.findOne({
-    email: req.session.user
-  }, (err, results) => {
-    if (!err) {
-      if (results.subscribed.length >= 5) {
-        return res.json({feedBack: 'failure'})
-      } else {
-        results.subscribed.push(req.body.genreId)
-        results.save()
-        return res.json({feedBack: 'success'})
-      }
 
-    } else {
-      console.log(err)
-    }
-  })
-})
-
-app.patch('/server/unsubscribe', (req, res) => {
-  User.findOne({
-    email: req.session.user
-  }, (err, results) => {
-    if (!err) {
-      results.subscribed = results.subscribed.filter(s => s !== req.body.genreId)
-      results.save()
-      return res.json({feedBack: 'success'})
-    } else {
-      console.log(err)
-    }
-  })
-})
 
 app.get('/server/trailer/:id', async (req, res) => {
   let key = await getTrailer(req.params.id)
@@ -119,65 +88,7 @@ app.post('/server/search-movie', (req, res) => {
   })
 })
 
-app.patch('/server/like-movie', (req, res) => {
-  User.findOneAndUpdate({
-    email: req.session.user
-  }, {
-    $addToSet: {
-      liked: req.body.movieId
-    }
-  }, (err, results) => {
-    if (!err) {
-      res.json({feedBack: 'success'})
-    } else {
-      console.log(err)
-    }
-  })
-})
 
-app.patch('/server/unlike-movie', (req, res) => {
-  User.findOne({
-    email: req.session.user
-  }, (err, results) => {
-    if (!err) {
-      results.liked = results.liked.filter(s => s !== req.body.movieId)
-      results.save()
-      res.json({feedBack: 'success'})
-    } else {
-      console.log(err)
-    }
-  })
-})
-
-app.patch('/server/add-to-watchlist', (req, res) => {
-  User.findOneAndUpdate({
-    email: req.session.user
-  }, {
-    $addToSet: {
-      watchlist: req.body.movieId
-    }
-  }, (err, results) => {
-    if (!err) {
-      res.json({feedBack: 'success'})
-    } else {
-      console.log(err)
-    }
-  })
-})
-
-app.patch('/server/remove-from-watchlist', (req, res) => {
-  User.findOne({
-    email: req.session.user
-  }, (err, results) => {
-    if (!err) {
-      results.watchlist = results.watchlist.filter(s => s !== req.body.movieId)
-      results.save()
-      res.json({feedBack: 'success'})
-    } else {
-      console.log(err)
-    }
-  })
-})
 
 app.get('/server/movies/:pageId', (req, res) => {
   var page = req.params.pageId
@@ -286,7 +197,7 @@ app.get('/server/get-user-details', (req, res) => {
     email: req.session.user
   }, (err, results) => {
     if(!err && results) {
-      res.json(results)
+      res.json({username: results.username, email: results.email})
     }
   })
 })

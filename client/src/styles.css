@@ -4,6 +4,16 @@ body{
 .loading{
   text-align: center;
 }
+
+/* footer component */
+.footer-text{
+  text-align: center;
+}
+.heart{
+  color : red;
+}
+
+
 /* Register component */
 
 .register-row{
@@ -66,8 +76,8 @@ body{
   margin-top: 50px;
 }
 .trailer{
-  width: 70vh;
-  height: 50vh;
+  width: 70%;
+  height: 60vh;
 }
 .star{
   color: gold;

@@ -2,10 +2,10 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 function MovieCard(props) {
-  let imageSrc = props.poster? 'https://image.tmdb.org/t/p/original'+props.poster: require('../theme.jpg')
+  let imageSrc = props.poster? 'https://image.tmdb.org/t/p/original'+props.poster: require('../../images/theme.jpg')
 
   return (<div className="card">
-    <img src={imageSrc} className="card-img-top img-fluid movie-img" alt="alt"/> {
+    <img src={imageSrc} className="card-img-top img-fluid" alt="alt"/> {
       props.place === 'home'
         ? <div className="card-body">
             <Link to={'/item/'+props.type+'/'+props.id} className="card-link stretched-link">

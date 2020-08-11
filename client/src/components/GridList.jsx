@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react'
 import {useLocation, useHistory, useParams} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import Pagination from '@material-ui/lab/Pagination'
-import Jumbotron from './Jumbotron'
 import MovieCard from './cards/MovieCard'
 import NewsCard from './cards/NewsCard'
 import Header from './partials/Header'
+import Footer from './partials/Footer'
+import Jumbotron from './partials/Jumbotron'
 import {setNowShowing} from '../actions/movies'
 
 function GridList(props) {
@@ -46,7 +47,7 @@ function GridList(props) {
 
   return (<div className='container'>
     <Header/>
-    <Jumbotron place='list'/>
+    <Jumbotron />
     <div className={breakpoints}>
 
       {props.type === 'now-showing' &&
@@ -70,6 +71,8 @@ function GridList(props) {
     }
 
   </div>
+
+  <Footer/>
 </div>)
 }
 

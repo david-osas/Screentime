@@ -3,6 +3,7 @@ import {useParams, useLocation} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 import StarIcon from '@material-ui/icons/Star';
 import Header from './partials/Header'
+import Footer from './partials/Footer'
 import ItemTitle from './ItemTitle'
 
 function Item() {
@@ -65,7 +66,7 @@ function Item() {
   let value = useSelector(state => getItem(state))
   let item = location.state? location.state.result : value
 
-  imageSrc = item.posterPath? 'https://image.tmdb.org/t/p/original'+item.posterPath: require('./theme.jpg')
+  imageSrc = item.posterPath? 'https://image.tmdb.org/t/p/original'+item.posterPath: require('../images/theme.jpg')
   if(!genre){
     getGenre(item.genreIds)
   }
@@ -105,6 +106,7 @@ function Item() {
       </ul>
     </div>}
 
+    <Footer/>
   </div>)
 }
 

@@ -2,6 +2,7 @@ import React, {Fragment} from 'react'
 import {Button} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import Header from '../partials/Header'
+import Footer from '../partials/Footer'
 import Carousel from '../carousel/Carousel'
 import Title from './Title'
 import HomeGrid from './HomeGrid'
@@ -20,7 +21,7 @@ function Home(){
         <Link to={secLinks[i]}><Button color="primary">Show more</Button></Link>
       </Fragment>
     )}
-
+    <Footer/>
   </div>)
 }
 

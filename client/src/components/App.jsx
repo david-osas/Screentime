@@ -57,7 +57,7 @@ function App() {
         </Route>
 
         <Route>
-          <h1>No match bro</h1>
+          <h1>No match, try a different route</h1>
         </Route>
       </Switch>
 
