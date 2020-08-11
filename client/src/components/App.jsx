@@ -26,15 +26,12 @@ function App() {
       .then(res => {
         if(res.feedBack === 'success'){
           dispatch(handleInitial(1))
-          console.log('david')
           setAuthed(true)
         }else{
-          console.log('osas')
           history.push('/register')
         }
       })
     }
-    console.log(location.pathname)
   }, [authed,dispatch, history, location])
 
 

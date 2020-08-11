@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {TextField, Button, IconButton} from '@material-ui/core'
 import {Link} from 'react-router-dom'
 import {useHistory} from 'react-router-dom'
@@ -12,10 +12,22 @@ function Header() {
   let navLinks = ['/now-showing/1', '/trending-movies', '/latest-news']
   let [search, setSearch] = useState('')
   let [err, setErr] = useState(false)
+  let [user, setUser] = useState('')
   let history = useHistory()
 
   function handleSearch(e){
     setSearch(e.target.value)
+  }
+
+  function logout(){
+    console.log('osas')
+    fetch('http://localhost:5000/server/logout', {method: 'DELETE', credentials: 'include'})
+    .then(response => response.json())
+    .then(res => {
+      if(res.feedBack === 'success'){
+        history.push('/register')
+      }
+    })
   }
 
   async function startSearch(e){
@@ -34,6 +46,14 @@ function Header() {
       history.push(path, {result: res.result})
     }
   }
+
+  useEffect(() => {
+    fetch('http://localhost:5000/server/get-user', {credentials: 'include'})
+    .then(response => response.json())
+    .then(res => {
+      setUser(res.username[0].toUpperCase()+res.username.slice(1))
+    })
+  },[])
 
   return (<nav className="navbar navbar-expand-lg navbar-light bg-light mb-3">
     <Link className="navbar-brand" to='/'>
@@ -64,9 +84,9 @@ function Header() {
           <AccountCircleIcon fontSize='large'  className='dropdown'/>
         </IconButton>
         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <p className="dropdown-item">Hello David</p>
+          <p className="dropdown-item">Hello {user}</p>
           <div className="dropdown-divider"></div>
-          <Button className='dropdown-item'>Log out</Button>
+          <Button className='dropdown-item' onClick={logout}>Log out</Button>
         </div>
       </div>
 
@@ -75,4 +95,3 @@ function Header() {
 }
 
 export default Header;
- 

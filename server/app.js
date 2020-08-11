@@ -199,7 +199,7 @@ app.get('/server/get-user', (req, res) => {
       email: req.session.user
     }, (err, results) => {
       if(!err && results) {
-        res.json({username: results.username, email: results.email, feedBack: 'success'})
+        res.json({username: results.username, feedBack: 'success'})
       }
     })
   }else{
@@ -209,7 +209,7 @@ app.get('/server/get-user', (req, res) => {
 
 app.delete('/server/logout', (req, res) => {
   req.session.destroy(() => {
-    res.json({feedBack: 'logged out'})
+    res.json({feedBack: 'success'})
   })
 })
 
