@@ -1,5 +1,7 @@
 import React from 'react'
 
+//Title component used to show title of each section in the home page
+
 function Title(props){
 
   return (

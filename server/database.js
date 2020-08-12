@@ -4,6 +4,9 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
 const {getShowing, getPopular, getGenreList, getNews} = require('./api')
+
+//Module to handle all forms of database coding, including updating the database
+
 let update = false
 
 mongoose.connect('mongodb://localhost:27017/screentimeDB', {
@@ -17,7 +20,6 @@ exports.sess = {
   resave: false,
   saveUninitialized: false,
   cookie: {
-    // 7 * 24 * 60 * 60 * 1000
     maxAge: 7 * 24 * 60 * 60 * 1000
   },
   store: new MongoStore({mongooseConnection: mongoose.connection})

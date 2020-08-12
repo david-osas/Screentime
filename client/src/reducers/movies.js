@@ -1,3 +1,4 @@
+//Reducers for changing now showing, trending and platforms states in the store
 
 export function nowShowing(state= {}, action){
   switch(action.type){

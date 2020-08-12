@@ -9,6 +9,9 @@ import '../styles.css'
 import {handleInitial} from '../actions/initial'
 import {loading} from '../actions/loading'
 
+//Main app file, client side routing is programmed here
+//Store data is initially set from this component, provided suitable conditions are met
+
 function App() {
   let load = useSelector(state => state.loading)
   let [authed, setAuthed] = useState(false)
@@ -21,7 +24,7 @@ function App() {
     if(location.pathname === '/register'){
       dispatch(loading(false))
     }else if(!authed){
-      fetch('http://localhost:5000/server/get-user', {credentials: 'include'})
+      fetch('/server/get-user', {credentials: 'same-origin'})
       .then(response => response.json())
       .then(res => {
         if(res.feedBack === 'success'){

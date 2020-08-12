@@ -7,6 +7,9 @@ import RegisterCard from './cards/RegisterCard'
 import RegisterInput from './RegisterInput'
 import {loading} from '../actions/loading'
 
+//Register component used to login or signup a user
+//form input UI changes if error validation is received from the server
+
 function Register() {
   let [btnState, setBtnState] = useState(['login', 'signup'])
   let [username, setUsername] = useState('')
@@ -41,16 +44,16 @@ function Register() {
     let fetchOptions = {
       method: 'POST',
       body: JSON.stringify({email, username, password}),
-      credentials: 'include',
+      credentials: 'same-origin',
       headers: {"Content-Type": "application/json"}
     }
 
     if(action === 'login'){
-      let response = await fetch('http://localhost:5000/server/login', fetchOptions)
+      let response = await fetch('/server/login', fetchOptions)
       resJson = await response.json()
 
     }else{
-      let response = await fetch('http://localhost:5000/server/signup', fetchOptions)
+      let response = await fetch('/server/signup', fetchOptions)
       resJson = await response.json()
     }
 

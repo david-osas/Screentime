@@ -1,5 +1,7 @@
 import React from 'react'
 
+//Carousel indicator component
+
 function Indicator(props){
 
   return(

@@ -1,6 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
+//Movie card component, created using bootstrap classes  
+
 function MovieCard(props) {
   let imageSrc = props.poster? 'https://image.tmdb.org/t/p/original'+props.poster: require('../../images/theme.jpg')
 

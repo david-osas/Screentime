@@ -9,6 +9,9 @@ import Footer from './partials/Footer'
 import Jumbotron from './partials/Jumbotron'
 import {setNowShowing} from '../actions/movies'
 
+//Grid list component, used to render lists of now showing movies, trending movies or news items
+//If rendering now showing movies it fetches page numbers after being mounted 
+
 function GridList(props) {
   let location = useLocation()
   let nowShowing = useSelector(state => Object.entries(state.nowShowing.movies))
@@ -22,7 +25,7 @@ function GridList(props) {
 
   useEffect(() => {
     if(props.type === 'now-showing'){
-      fetch('http://localhost:5000/server/page-numbers')
+      fetch('/server/page-numbers', {credentials: 'same-origin'})
       .then(response => response.json())
       .then(res => {
         setTotal(res.num)

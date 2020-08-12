@@ -7,6 +7,8 @@ import Carousel from '../carousel/Carousel'
 import Title from './Title'
 import HomeGrid from './HomeGrid'
 
+//Home page component
+
 function Home(){
   let sections = ['Now Showing', 'Trending', 'News']
   let secLinks = ['/now-showing/1', '/trending-movies', '/latest-news']

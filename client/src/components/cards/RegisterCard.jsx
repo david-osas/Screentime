@@ -1,5 +1,7 @@
 import React from 'react'
 
+//Card component for the register component, created using bootstrap classes
+
 function RegisterCard(){
 
   return(

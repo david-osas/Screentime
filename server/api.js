@@ -1,6 +1,8 @@
 require('dotenv').config()
 const fetch = require('node-fetch')
 
+//Functions to make API calls and transform required response data into needed format
+
 exports.getTrailer = async function(id){
   let url = 'https://api.themoviedb.org/3/movie/'+id+'/videos?api_key='+process.env.TMB_KEY+'&language=en-US'
   let response = await fetch(url)

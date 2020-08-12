@@ -5,6 +5,7 @@ import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import Logo from './Logo'
 
+//Header component, it gets user data after being mounted
 
 function Header() {
 
@@ -21,7 +22,7 @@ function Header() {
 
   function logout(){
     console.log('osas')
-    fetch('http://localhost:5000/server/logout', {method: 'DELETE', credentials: 'include'})
+    fetch('/server/logout', {method: 'DELETE', credentials: 'same-origin'})
     .then(response => response.json())
     .then(res => {
       if(res.feedBack === 'success'){
@@ -35,9 +36,10 @@ function Header() {
     let fetchOptions = {
       method: 'POST',
       body: JSON.stringify({movie: search}),
+      credentials: 'same-origin',
       headers: {"Content-Type": "application/json"}
     }
-    let response = await fetch('http://localhost:5000/server/search-movie', fetchOptions)
+    let response = await fetch('/server/search-movie', fetchOptions)
     let res = await response.json()
     if(res.feedBack){
       setErr(true)
@@ -48,7 +50,7 @@ function Header() {
   }
 
   useEffect(() => {
-    fetch('http://localhost:5000/server/get-user', {credentials: 'include'})
+    fetch('/server/get-user', {credentials: 'same-origin'})
     .then(response => response.json())
     .then(res => {
       setUser(res.username[0].toUpperCase()+res.username.slice(1))

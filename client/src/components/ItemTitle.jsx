@@ -1,5 +1,7 @@
 import React from 'react'
 
+//Title component used in item component to render names to movies
+
 function ItemTitle(props){
 
   return (

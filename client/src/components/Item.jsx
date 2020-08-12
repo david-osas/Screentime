@@ -6,6 +6,8 @@ import Header from './partials/Header'
 import Footer from './partials/Footer'
 import ItemTitle from './ItemTitle'
 
+//Item component to render more details on individual movies, whether in now showing or trending
+
 function Item() {
 
   let imageSrc
@@ -21,16 +23,17 @@ function Item() {
     let fetchOptions = {
       method: 'POST',
       body: JSON.stringify({genre}),
+      credentials: 'same-origin',
       headers: {"Content-Type": "application/json"}
     }
-    fetch('http://localhost:5000/server/genre', fetchOptions)
+    fetch('/server/genre', fetchOptions)
     .then(response => response.json())
     .then(res => {
       setIsGenre(res.genres)
     })
   }
   function getCinemas(){
-    fetch('http://localhost:5000/server/cinemas')
+    fetch('/server/cinemas', {credentials: 'same-origin'})
     .then(response => response.json())
     .then(res => {
       if(!cinemas){
@@ -40,7 +43,7 @@ function Item() {
   }
 
   useEffect(() => {
-      fetch('http://localhost:5000/server/trailer/'+itemId)
+      fetch('/server/trailer/'+itemId, {credentials: 'same-origin'})
       .then(response => response.json())
       .then(res => {
         if(!key){

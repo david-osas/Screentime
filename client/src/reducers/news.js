@@ -1,3 +1,4 @@
+//Reducer for changing news state in the store
 
 export function news(state=[], action){
   switch(action.type){

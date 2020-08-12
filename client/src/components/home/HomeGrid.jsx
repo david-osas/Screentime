@@ -3,6 +3,8 @@ import {useSelector} from 'react-redux'
 import NewsCard from '../cards/NewsCard'
 import MovieCard from '../cards/MovieCard'
 
+//Home grid component used to render grids of cards in different sections of the home page
+
 function HomeGrid(props) {
   let topShowing = useSelector(state => state.nowShowing.top)
   let topArticles = useSelector(state => state.news.slice(0,4))

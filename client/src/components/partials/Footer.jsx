@@ -6,6 +6,8 @@ import YouTubeIcon from '@material-ui/icons/YouTube'
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Logo from './Logo'
 
+//Footer component 
+
 function Footer() {
 
   return (<footer className='mt-3 p-4 bg-light'>

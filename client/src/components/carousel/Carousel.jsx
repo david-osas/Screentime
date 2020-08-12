@@ -5,6 +5,8 @@ import jamesBond from '../../images/james-bond.jpg'
 import oldGaurd from '../../images/old-gaurd.jpg'
 import hobbit from '../../images/hobbit.jpg'
 
+//Carousel component for the home page component, carousel styling is done using bootstrap classes
+
 function Carousel() {
   const first = 'See the hottest movies showing in cinemas and never miss a new release'
   const second = 'Checkout trending movies available for streaming and always have them one click away'

@@ -1,5 +1,7 @@
 import React from 'react'
 
+//Jumbotron component, used in grid list component to display headers of different grid lists
+
 function Jumbotron(props) {
   let place
   switch(props.place){

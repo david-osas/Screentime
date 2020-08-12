@@ -8,6 +8,8 @@ import {BrowserRouter} from 'react-router-dom'
 import App from './components/App';
 import reducer from './reducers/index'
 
+//Root Javascript file
+
 const store = createStore(reducer, applyMiddleware(thunk))
 
 ReactDOM.render(

@@ -1,5 +1,7 @@
 import React from 'react'
 
+//News card component, created using bootstrap classes
+
 function NewsCard(props) {
 
   return (<div className="card text-white">
