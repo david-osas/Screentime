@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.63caaf9b.chunk.css",
+    "main.js": "/static/js/main.00cc776b.chunk.js",
+    "main.js.map": "/static/js/main.00cc776b.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.09b85ec0.js",
+    "runtime-main.js.map": "/static/js/runtime-main.09b85ec0.js.map",
+    "static/js/2.1b50a5c6.chunk.js": "/static/js/2.1b50a5c6.chunk.js",
+    "static/js/2.1b50a5c6.chunk.js.map": "/static/js/2.1b50a5c6.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.3910047d703b74756b53ca4bb421bf85.js": "/precache-manifest.3910047d703b74756b53ca4bb421bf85.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.63caaf9b.chunk.css.map": "/static/css/main.63caaf9b.chunk.css.map",
+    "static/js/2.1b50a5c6.chunk.js.LICENSE.txt": "/static/js/2.1b50a5c6.chunk.js.LICENSE.txt",
+    "static/media/avengers.png": "/static/media/avengers.f0e552a7.png",
+    "static/media/hobbit.jpg": "/static/media/hobbit.300f9619.jpg",
+    "static/media/james-bond.jpg": "/static/media/james-bond.97a22610.jpg",
+    "static/media/old-gaurd.jpg": "/static/media/old-gaurd.9a974b87.jpg",
+    "static/media/theme.jpg": "/static/media/theme.74589c29.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.09b85ec0.js",
+    "static/js/2.1b50a5c6.chunk.js",
+    "static/css/main.63caaf9b.chunk.css",
+    "static/js/main.00cc776b.chunk.js"
+  ]
+}

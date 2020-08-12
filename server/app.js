@@ -1,5 +1,6 @@
 //jshint esversion: 6
 const express = require('express')
+const path = require('path')
 const cors = require('cors')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
@@ -17,7 +18,9 @@ if (app.get('env') === 'production') {
   sess.cookie.secure = true
 }
 
-app.use(express.json(), cors({credentials: true, origin: true}), session(sess), isUpdating)
+app.use(express.static(path.join(__dirname, 'build')))
+
+app.use(express.json(), cors({credentials: true, origin: true}), session(sess), isAuthenticated, isUpdating)
 
 
 app.get('/server/top-news', (req, res) => {
@@ -216,11 +219,15 @@ app.delete('/server/logout', (req, res) => {
 
 
 app.get('/*', (req, res) => {
-  res.send('welcome home')
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 5000;
+}
 
-app.listen(5000, () => {
+app.listen(port, () => {
   console.log('server started on port 5000')
   // let intervaleObj = runUpdate()
   // setTimeout(() => {
