@@ -9,7 +9,7 @@ const {getShowing, getPopular, getGenreList, getNews} = require('./api')
 
 let update = false
 
-mongoose.connect('mongodb://localhost:27017/screentimeDB', {
+mongoose.connect('mongodb+srv://admin-osas:'+process.env.ATLAS+'@screentimecluster.cymqi.mongodb.net/screentimeDB', {
   useFindAndModify: false,
   useNewUrlParser: true,
   useUnifiedTopology: true
