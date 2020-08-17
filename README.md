@@ -2,7 +2,7 @@
 
 Welcome to Screentime, a web application where users can see now showing movies and cinemas that are showing them, popular movies and streaming platforms they can be found on, and the latest news in the world of entertainment about your favourite celebrities and movies.
 
-View the deployed application at https://movies-screentime.herokuapp.com/
+View the deployed application at https://movies-screentime.herokuapp.com/  (you can put in fake details if you don't want to share real data, your information would be secure ☺)
 
 # Technologies used
 
