@@ -154,4 +154,4 @@ exports.session = session
 exports.setData = setData
 
 exports.isUpdating = isUpdating
-exports.runUpdate = () => setInterval(startUpdate, 1 * 60 * 1000)
+exports.runUpdate = () => setInterval(startUpdate, 7 * 24 * 60 * 60 * 1000)
