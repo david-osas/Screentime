@@ -68,12 +68,13 @@ function GridList(props) {
       news.map((t) => <div className='col mb-4' key={t._id}>
         <NewsCard poster={t.urlToImage} url={t.url} title={t.title}/>
     </div>)}
-
-    {props.type === 'now-showing' &&
-    <Pagination className='mx-auto my-4' count={totalPages} color='primary' onChange={handlePage}/>
-    }
-
   </div>
+      
+    {props.type === 'now-showing' &&
+  <div className='page-numbers my-4'>
+    <Pagination count={totalPages} color='primary' onChange={handlePage}/>
+  </div>
+  }
 
   <Footer/>
 </div>)
