@@ -50,6 +50,12 @@ body{
   height: 300px;
 }
 
+/* Grid List */
+.page-numbers{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 
 /* Item component */
