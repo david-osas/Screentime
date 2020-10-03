@@ -4,7 +4,7 @@ Welcome to Screentime, a web application where users can see now showing movies 
 
 View the deployed application at https://movies-screentime.herokuapp.com/  (you can put in fake details if you don't want to share real data, your information would be secure ☺)
 
-# Technologies used
+## Technologies used
 
 Frontend: React, Redux, Bootstrap, MaterialUI
 
@@ -12,7 +12,7 @@ Backend: NodeJS, ExpressJS, MongoDB with the Mongoose ODM
 
 APIs used: TMDB API, News API
 
-# Application 
+## Application 
 
 Register to get full access to amazing movie content on the website
 
@@ -38,7 +38,7 @@ Go through a list of articles about current entertainment news
 
 ![home](images/news.png?raw=true)
 
-Click on any movie to see more details about the movie, such as genres, overview and trailer
+Click on any movie to see more details about the movie, such as genres, overview, and trailer
 
 ![home](images/item.png?raw=true)
 
@@ -46,6 +46,6 @@ Search for your desired movies among the now showing movies
 
 ![home](images/search.png?raw=true)
 
-Feel free to logout anytime you wish
+Feel free to log out anytime you wish
 
 ![home](images/logout.png?raw=true)
